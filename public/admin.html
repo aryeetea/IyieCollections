@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>IYIÉ Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Display:ital,wght@0,300;1,300&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --black: #0c0c0c;
+      --sidebar: #080808;
+      --surface: #141414;
+      --card: #1a1a1a;
+      --white: #ede9e3;
+      --pink: #F7838D;
+      --pink-deep: #d46870;
+      --muted: rgba(237,233,227,0.38);
+      --border: rgba(237,233,227,0.08);
+    }
+
+    html, body { height: 100%; font-family: 'DM Sans', sans-serif; color: var(--white); background: var(--black); }
+
+    /* ── Login ── */
+    .login-wrap { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: var(--black); }
+    .login-box { background: var(--surface); width: 360px; padding: 3rem 2.5rem; border: 1px solid var(--border); }
+    .login-logo { font-family: 'Noto Serif Display', serif; font-size: 52px; font-weight: 300; color: var(--white); letter-spacing: 4px; text-align: center; }
+    .login-logo em { font-style: italic; color: var(--pink); }
+    .login-sub { font-size: 8px; letter-spacing: 6px; color: var(--muted); text-align: center; margin: 6px 0 2.25rem; text-transform: uppercase; }
+    .login-label { font-size: 9px; letter-spacing: 3px; color: var(--muted); font-weight: 500; text-transform: uppercase; display: block; text-align: left; margin-bottom: 8px; }
+    .login-input { width: 100%; border: 1px solid var(--border); background: rgba(237,233,227,0.04); padding: 14px 16px; font-size: 15px; font-family: 'DM Sans', sans-serif; color: var(--white); border-radius: 0; outline: none; margin-bottom: 12px; transition: border-color 0.2s; }
+    .login-input:focus { border-color: rgba(247,131,141,0.6); }
+    .login-input::placeholder { color: rgba(237,233,227,0.18); }
+    .login-btn { width: 100%; background: var(--pink); color: var(--black); border: none; padding: 15px; font-size: 10px; letter-spacing: 5px; font-family: 'DM Sans', sans-serif; font-weight: 600; cursor: pointer; border-radius: 0; text-transform: uppercase; transition: background 0.2s; }
+    .login-btn:hover { background: var(--pink-deep); }
+    .login-err { font-size: 12px; color: var(--pink); margin-top: 10px; display: none; text-align: center; }
+
+    /* ── App shell ── */
+    .app { display: none; height: 100vh; grid-template-columns: 224px 1fr; grid-template-rows: 1fr; }
+
+    /* ── Sidebar ── */
+    .sidebar { background: var(--sidebar); display: flex; flex-direction: column; border-right: 1px solid var(--border); }
+    .sidebar-logo { padding: 2rem 1.75rem 1.5rem; border-bottom: 1px solid var(--border); }
+    .sidebar-logo-text { font-family: 'Noto Serif Display', serif; font-size: 26px; font-weight: 300; color: var(--white); letter-spacing: 3px; }
+    .sidebar-logo-text em { font-style: italic; color: var(--pink); }
+    .sidebar-logo-sub { font-size: 8px; letter-spacing: 5px; color: var(--muted); margin-top: 3px; text-transform: uppercase; }
+    .sidebar-nav { padding: 1.25rem 0; flex: 1; }
+    .nav-section { font-size: 8px; letter-spacing: 3px; color: rgba(237,233,227,0.2); padding: 0 1.75rem; margin-bottom: 6px; margin-top: 1.25rem; text-transform: uppercase; }
+    .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 1.75rem; font-size: 13px; color: var(--muted); cursor: pointer; transition: all 0.15s; border-left: 2px solid transparent; }
+    .nav-item:hover { color: var(--white); background: rgba(237,233,227,0.03); }
+    .nav-item.active { color: var(--pink); border-left-color: var(--pink); background: rgba(247,131,141,0.06); }
+    .nav-icon { font-size: 14px; opacity: 0.7; }
+    .sidebar-bottom { padding: 1.5rem 1.75rem; border-top: 1px solid var(--border); }
+    .logout-btn { font-size: 10px; letter-spacing: 3px; color: var(--muted); cursor: pointer; background: none; border: none; font-family: 'DM Sans', sans-serif; padding: 0; text-transform: uppercase; transition: color 0.15s; }
+    .logout-btn:hover { color: var(--pink); }
+
+    /* ── Main ── */
+    .main { display: flex; flex-direction: column; overflow: hidden; background: var(--black); }
+    .topbar { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 2.5rem; height: 60px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
+    .topbar-title { font-family: 'Noto Serif Display', serif; font-size: 18px; font-weight: 300; color: var(--white); }
+    .topbar-meta { font-size: 11px; color: var(--muted); letter-spacing: 1px; }
+    .content { flex: 1; overflow-y: auto; padding: 2rem 2.5rem; }
+
+    /* ── Views ── */
+    .view { display: none; }
+    .view.active { display: block; }
+
+    /* Stats */
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 1.75rem; }
+    .stat { background: var(--card); border: 1px solid var(--border); padding: 1.25rem 1.5rem; }
+    .stat-label { font-size: 9px; letter-spacing: 3px; color: var(--pink); font-weight: 600; text-transform: uppercase; margin-bottom: 10px; }
+    .stat-val { font-family: 'Noto Serif Display', serif; font-size: 38px; font-weight: 300; color: var(--white); line-height: 1; }
+    .stat-val--sm { font-size: 20px; padding-top: 8px; }
+    .stat-val--live { font-size: 18px; padding-top: 10px; color: var(--pink); }
+    .stat-sub { font-size: 11px; color: var(--muted); margin-top: 5px; }
+
+    /* Table */
+    .table-wrap { background: var(--card); border: 1px solid var(--border); }
+    .table-header { padding: 1rem 1.5rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+    .table-header-title { font-size: 11px; font-weight: 500; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; }
+    .search-input { border: 1px solid var(--border); background: rgba(237,233,227,0.04); padding: 8px 12px; font-size: 12px; font-family: 'DM Sans', sans-serif; border-radius: 0; outline: none; width: 220px; color: var(--white); }
+    .search-input:focus { border-color: rgba(247,131,141,0.5); }
+    .search-input::placeholder { color: rgba(237,233,227,0.2); }
+    table { width: 100%; border-collapse: collapse; }
+    th { font-size: 8px; letter-spacing: 2px; color: var(--muted); font-weight: 600; padding: 10px 1.5rem; text-align: left; border-bottom: 1px solid var(--border); background: var(--surface); text-transform: uppercase; }
+    td { font-size: 13px; padding: 12px 1.5rem; border-bottom: 1px solid var(--border); color: var(--white); }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(237,233,227,0.02); }
+    .del-btn { background: none; border: none; color: rgba(237,233,227,0.15); cursor: pointer; font-size: 14px; transition: color 0.15s; padding: 0; line-height: 1; }
+    .del-btn:hover { color: var(--pink); }
+    .empty-state { text-align: center; padding: 3rem; color: var(--muted); font-size: 13px; }
+    .empty-star { font-size: 22px; color: rgba(237,233,227,0.12); display: block; margin-bottom: 0.75rem; }
+
+    /* Compose */
+    .compose-grid { display: grid; grid-template-columns: 1fr 360px; gap: 1.25rem; }
+    .compose-panel { background: var(--card); border: 1px solid var(--border); padding: 1.75rem; }
+    .compose-panel h3 { font-size: 9px; letter-spacing: 3px; color: var(--pink); font-weight: 600; text-transform: uppercase; margin-bottom: 1.25rem; }
+    .compose-panel--mb { margin-bottom: 1rem; }
+    .c-field { margin-bottom: 1rem; }
+    .c-label { display: block; font-size: 9px; letter-spacing: 2px; color: var(--muted); font-weight: 500; text-transform: uppercase; margin-bottom: 7px; }
+    .c-input { width: 100%; border: 1px solid var(--border); background: rgba(237,233,227,0.04); padding: 12px 14px; font-size: 14px; font-family: 'DM Sans', sans-serif; color: var(--white); border-radius: 0; outline: none; transition: border-color 0.2s; }
+    .c-input:focus { border-color: rgba(247,131,141,0.5); }
+    .c-input::placeholder { color: rgba(237,233,227,0.18); }
+    .c-textarea { width: 100%; border: 1px solid var(--border); background: rgba(237,233,227,0.04); padding: 12px 14px; font-size: 13px; font-family: 'DM Sans', sans-serif; color: var(--white); border-radius: 0; outline: none; resize: vertical; min-height: 220px; transition: border-color 0.2s; line-height: 1.7; }
+    .c-textarea:focus { border-color: rgba(247,131,141,0.5); }
+    .c-textarea::placeholder { color: rgba(237,233,227,0.18); }
+    .c-hint { font-size: 11px; color: rgba(237,233,227,0.25); margin-top: 5px; line-height: 1.6; }
+    .c-hint--mt { margin-top: 10px; }
+    .c-hint em { color: var(--muted); font-style: normal; }
+    .blast-btn { width: 100%; background: var(--pink); color: var(--black); border: none; padding: 14px; font-size: 10px; letter-spacing: 5px; font-family: 'DM Sans', sans-serif; font-weight: 600; cursor: pointer; border-radius: 0; text-transform: uppercase; margin-top: 1rem; transition: background 0.2s; position: relative; }
+    .blast-btn:hover { background: var(--pink-deep); }
+    .blast-btn.loading { color: transparent; pointer-events: none; }
+    .blast-btn.loading::after { content: ''; position: absolute; top: 50%; left: 50%; width: 16px; height: 16px; margin: -8px 0 0 -8px; border: 2px solid rgba(12,12,12,0.3); border-top-color: var(--black); border-radius: 50%; will-change: transform; animation: spin 0.7s linear infinite; }
+    @keyframes spin { to { rotate: 1turn; } }
+
+    /* Preview */
+    .preview-inner { background: #0f0f0f; border: 1px solid var(--border); overflow: hidden; }
+    .preview-bar { background: var(--surface); padding: 8px 12px; display: flex; align-items: center; gap: 6px; border-bottom: 1px solid var(--border); }
+    .preview-dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(237,233,227,0.12); }
+    .preview-label { font-size: 9px; color: var(--muted); margin-left: 4px; letter-spacing: 2px; text-transform: uppercase; }
+    .preview-email { padding: 0; }
+    .preview-email-header { background: var(--pink); padding: 24px; text-align: center; }
+    .preview-logo { font-family: 'Noto Serif Display', serif; font-size: 26px; font-weight: 300; color: var(--black); letter-spacing: 4px; }
+    .preview-logo em { font-style: italic; }
+    .preview-body { background: #111; padding: 24px; }
+    .preview-body-content { font-size: 12px; color: var(--muted); line-height: 1.8; min-height: 80px; white-space: pre-wrap; word-break: break-word; }
+    .preview-footer { background: var(--sidebar); padding: 14px 24px; text-align: center; border-top: 1px solid var(--border); }
+    .preview-footer-text { font-size: 10px; color: rgba(237,233,227,0.2); letter-spacing: 1px; }
+    .preview-footer a { color: var(--pink); }
+
+    /* Toast */
+    .toast { position: fixed; bottom: 2rem; right: 2rem; background: var(--card); color: var(--white); padding: 12px 20px; font-size: 13px; border: 1px solid var(--border); transform: translateY(100px); opacity: 0; transition: all 0.3s; z-index: 999; }
+    .toast.show { transform: translateY(0); opacity: 1; }
+    .toast.success { border-left: 3px solid var(--pink); }
+    .toast.error { border-left: 3px solid #c0392b; }
+
+    @media (max-width: 900px) {
+      .compose-grid { grid-template-columns: 1fr; }
+      .stats { grid-template-columns: 1fr 1fr; }
+      .app { grid-template-columns: 1fr; }
+      .sidebar { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Login ── -->
+<div class="login-wrap" id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">IYI<em>É</em></div>
+    <p class="login-sub">Admin</p>
+    <label class="login-label" for="pwd">Password</label>
+    <input type="password" class="login-input" id="pwd" placeholder="Enter admin password"/>
+    <button type="button" class="login-btn" onclick="doLogin()">Enter</button>
+    <p class="login-err" id="login-err">Wrong password. Try again.</p>
+  </div>
+</div>
+
+<!-- ── App ── -->
+<div class="app" id="app-shell">
+
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="sidebar-logo-text">IYI<em>É</em></div>
+      <div class="sidebar-logo-sub">Style Admin</div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section">Overview</div>
+      <div class="nav-item active" onclick="showView('dashboard')">
+        <span class="nav-icon">✦</span> Dashboard
+      </div>
+      <div class="nav-section">Email</div>
+      <div class="nav-item" onclick="showView('subscribers')">
+        <span class="nav-icon">◎</span> Subscribers
+      </div>
+      <div class="nav-item" onclick="showView('blast')">
+        <span class="nav-icon">→</span> Send blast
+      </div>
+    </nav>
+    <div class="sidebar-bottom">
+      <button type="button" class="logout-btn" onclick="logout()">Sign out</button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <span class="topbar-title" id="topbar-title">Dashboard</span>
+      <span class="topbar-meta" id="topbar-date"></span>
+    </div>
+
+    <div class="content">
+
+      <!-- Dashboard -->
+      <div class="view active" id="view-dashboard">
+        <div class="stats">
+          <div class="stat">
+            <p class="stat-label">Subscribers</p>
+            <p class="stat-val" id="stat-count">—</p>
+            <p class="stat-sub">Inner circle members</p>
+          </div>
+          <div class="stat">
+            <p class="stat-label">Latest join</p>
+            <p class="stat-val stat-val--sm" id="stat-latest">—</p>
+            <p class="stat-sub">Most recent signup</p>
+          </div>
+          <div class="stat">
+            <p class="stat-label">Status</p>
+            <p class="stat-val stat-val--live">Live ✦</p>
+            <p class="stat-sub">Resend connected</p>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <div class="table-header">
+            <span class="table-header-title">Recent signups</span>
+          </div>
+          <table>
+            <thead><tr>
+              <th>Name</th><th>Email</th><th>Joined</th>
+            </tr></thead>
+            <tbody id="recent-tbody">
+              <tr><td colspan="3" class="empty-state"><span class="empty-star">✦</span>No subscribers yet.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Subscribers -->
+      <div class="view" id="view-subscribers">
+        <div class="table-wrap">
+          <div class="table-header">
+            <span class="table-header-title">All subscribers</span>
+            <input class="search-input" id="search-input" placeholder="Search by name or email…" oninput="filterSubs()"/>
+          </div>
+          <table>
+            <thead><tr>
+              <th>Name</th><th>Email</th><th>Joined</th><th></th>
+            </tr></thead>
+            <tbody id="subs-tbody">
+              <tr><td colspan="4" class="empty-state"><span class="empty-star">✦</span>No subscribers yet.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Blast -->
+      <div class="view" id="view-blast">
+        <div class="compose-grid">
+          <div class="compose-panel">
+            <h3>Compose blast</h3>
+            <div class="c-field">
+              <label class="c-label">Subject line</label>
+              <input class="c-input" id="blast-subject" placeholder="The new drop is here." oninput="updatePreview()"/>
+            </div>
+            <div class="c-field">
+              <label class="c-label">Preview text</label>
+              <input class="c-input" id="blast-preview" placeholder="The edit you've been waiting for…"/>
+            </div>
+            <div class="c-field">
+              <label class="c-label">Email body</label>
+              <textarea class="c-textarea" id="blast-body" placeholder="Write your email here. Use {{firstName}} to personalize it." oninput="updatePreview()"></textarea>
+              <p class="c-hint">Use <em>{{firstName}}</em> to greet each subscriber by name. HTML is supported.</p>
+            </div>
+            <button type="button" class="blast-btn" id="blast-btn" onclick="sendBlast()">Send to all subscribers</button>
+            <p class="c-hint c-hint--mt" id="blast-count-note"></p>
+          </div>
+
+          <div>
+            <div class="compose-panel compose-panel--mb">
+              <h3>Live preview</h3>
+            </div>
+            <div class="preview-inner">
+              <div class="preview-bar">
+                <div class="preview-dot"></div>
+                <div class="preview-dot"></div>
+                <div class="preview-dot"></div>
+                <span class="preview-label">Email preview</span>
+              </div>
+              <div class="preview-email">
+                <div class="preview-email-header">
+                  <div class="preview-logo">IYI<em>É</em></div>
+                </div>
+                <div class="preview-body">
+                  <div class="preview-body-content" id="preview-content">Your email body will appear here…</div>
+                </div>
+                <div class="preview-footer">
+                  <p class="preview-footer-text">IYIÉ Style · <a href="#">Unsubscribe</a></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  let token = null;
+  let allSubs = [];
+
+  async function doLogin() {
+    const pwd = document.getElementById('pwd').value;
+    const res = await fetch('/admin/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password: pwd })
+    });
+    const data = await res.json();
+    if (res.ok) {
+      token = data.token;
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('app-shell').style.display = 'grid';
+      init();
+    } else {
+      document.getElementById('login-err').style.display = 'block';
+    }
+  }
+
+  document.getElementById('pwd').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+
+  function logout() {
+    token = null;
+    document.getElementById('app-shell').style.display = 'none';
+    document.getElementById('login-screen').style.display = 'flex';
+    document.getElementById('pwd').value = '';
+  }
+
+  function init() {
+    document.getElementById('topbar-date').textContent = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+    loadSubscribers();
+  }
+
+  const titles = { dashboard: 'Dashboard', subscribers: 'Subscribers', blast: 'Send blast' };
+  function showView(name) {
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    document.getElementById('view-' + name).classList.add('active');
+    document.querySelectorAll('.nav-item').forEach(n => {
+      if (n.textContent.trim().toLowerCase().includes(name === 'blast' ? 'blast' : name)) n.classList.add('active');
+    });
+    document.getElementById('topbar-title').textContent = titles[name];
+    if (name === 'blast') updateBlastCount();
+  }
+
+  async function loadSubscribers() {
+    const res = await fetch('/admin/subscribers', { headers: { 'x-admin-token': token } });
+    const data = await res.json();
+    allSubs = data.subscribers || [];
+    renderDashboard();
+    renderSubsTable(allSubs);
+    updateBlastCount();
+  }
+
+  function renderDashboard() {
+    document.getElementById('stat-count').textContent = allSubs.length;
+    if (allSubs.length > 0) {
+      const latest = allSubs[allSubs.length - 1];
+      document.getElementById('stat-latest').textContent = latest.firstName || latest.email.split('@')[0];
+    }
+    const tbody = document.getElementById('recent-tbody');
+    const recent = [...allSubs].reverse().slice(0, 5);
+    if (recent.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="3" class="empty-state"><span class="empty-star">✦</span>No subscribers yet.</td></tr>';
+    } else {
+      tbody.innerHTML = recent.map(s => `
+        <tr>
+          <td>${s.firstName || '—'}</td>
+          <td style="color:var(--muted)">${s.email}</td>
+          <td style="color:var(--muted);font-size:11px">${formatDate(s.subscribedAt)}</td>
+        </tr>`).join('');
+    }
+  }
+
+  function renderSubsTable(subs) {
+    const tbody = document.getElementById('subs-tbody');
+    if (subs.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="4" class="empty-state"><span class="empty-star">✦</span>No subscribers yet.</td></tr>';
+      return;
+    }
+    tbody.innerHTML = [...subs].reverse().map(s => `
+      <tr>
+        <td>${s.firstName || '—'}</td>
+        <td style="color:var(--muted)">${s.email}</td>
+        <td style="color:var(--muted);font-size:11px">${formatDate(s.subscribedAt)}</td>
+        <td><button class="del-btn" onclick="deleteSub('${s.id}')" title="Remove">✕</button></td>
+      </tr>`).join('');
+  }
+
+  function filterSubs() {
+    const q = document.getElementById('search-input').value.toLowerCase();
+    const filtered = allSubs.filter(s => s.email.includes(q) || (s.firstName || '').toLowerCase().includes(q));
+    renderSubsTable(filtered);
+  }
+
+  async function deleteSub(id) {
+    if (!confirm('Remove this subscriber?')) return;
+    await fetch(`/admin/subscribers/${id}`, { method: 'DELETE', headers: { 'x-admin-token': token } });
+    showToast('Subscriber removed.', 'success');
+    loadSubscribers();
+  }
+
+  function updateBlastCount() {
+    const note = document.getElementById('blast-count-note');
+    if (note) note.textContent = allSubs.length > 0
+      ? `This will send to ${allSubs.length} subscriber${allSubs.length === 1 ? '' : 's'}.`
+      : 'No subscribers yet.';
+  }
+
+  function updatePreview() {
+    const body = document.getElementById('blast-body').value;
+    document.getElementById('preview-content').textContent = body || 'Your email body will appear here…';
+  }
+
+  async function sendBlast() {
+    const subject = document.getElementById('blast-subject').value.trim();
+    const html = document.getElementById('blast-body').value.trim();
+    const previewText = document.getElementById('blast-preview').value.trim();
+
+    if (!subject || !html) { showToast('Subject and body are required.', 'error'); return; }
+    if (allSubs.length === 0) { showToast('No subscribers to send to yet.', 'error'); return; }
+    if (!confirm(`Send "${subject}" to ${allSubs.length} subscriber${allSubs.length === 1 ? '' : 's'}?`)) return;
+
+    const btn = document.getElementById('blast-btn');
+    btn.classList.add('loading');
+
+    const res = await fetch('/admin/blast', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-admin-token': token },
+      body: JSON.stringify({ subject, html, previewText })
+    });
+    const data = await res.json();
+    btn.classList.remove('loading');
+
+    if (res.ok) {
+      showToast(`✦ Sent to ${data.sent} subscriber${data.sent === 1 ? '' : 's'}.`, 'success');
+      document.getElementById('blast-subject').value = '';
+      document.getElementById('blast-body').value = '';
+      document.getElementById('blast-preview').value = '';
+      document.getElementById('preview-content').textContent = 'Your email body will appear here…';
+    } else {
+      showToast(data.error || 'Send failed. Check your Resend API key.', 'error');
+    }
+  }
+
+  function formatDate(iso) {
+    if (!iso) return '—';
+    return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  }
+
+  function showToast(msg, type = 'success') {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = `toast ${type} show`;
+    setTimeout(() => { t.classList.remove('show'); }, 3500);
+  }
+</script>
+</body>
+</html>
