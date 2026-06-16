@@ -388,15 +388,73 @@
       pointer-events: none;
     }
 
+    /* ── 3D background watermark ── */
+    .bg-3d {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      z-index: 0;
+      perspective: 1400px;
+      overflow: hidden;
+    }
+
+    .bg-3d-word {
+      font-family: 'Noto Serif Display', serif;
+      font-weight: 300;
+      font-size: clamp(110px, 16vw, 210px);
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(26,17,9,0.038);
+      letter-spacing: 0.22em;
+      white-space: nowrap;
+      -webkit-user-select: none;
+      user-select: none;
+      will-change: transform;
+      opacity: 0.85;
+      animation: watermark-spin 36s linear infinite;
+      transform-origin: center center;
+    }
+
+    @keyframes watermark-spin {
+      from { transform: rotateY(0deg) rotateX(8deg); }
+      to   { transform: rotateY(360deg) rotateX(8deg); }
+    }
+
+    /* ── Confetti canvas ── */
+    #confetti-canvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 100;
+    }
+
+    /* Keep page content layered above background */
+    .page {
+      position: relative;
+      z-index: 1;
+    }
+
     @media (max-width: 480px) {
       .logo { font-size: 64px; }
       .paper { height: 350px; padding: 20px 20px 0; }
       .env { height: 148px; }
       .env-flap { height: 74px; }
+      .bg-3d-word { font-size: 88px; }
     }
   </style>
 </head>
 <body>
+
+<!-- 3D rotating watermark -->
+<div class="bg-3d" aria-hidden="true">
+  <div class="bg-3d-word">IYIÉ</div>
+</div>
+
+<!-- Confetti layer -->
+<canvas id="confetti-canvas"></canvas>
+
 <div class="page">
 
   <header class="brand">
@@ -514,6 +572,9 @@
       if (res.ok) {
         state = 'closing';
 
+        // Celebrate!
+        if (window._confettiBurst) window._confettiBurst(80);
+
         // Show success on the paper
         document.getElementById('form-state').style.display = 'none';
         if (firstName) {
@@ -554,6 +615,115 @@
       btn.classList.remove('loading');
     }
   });
+</script>
+
+<script>
+  /* ── Confetti engine ── */
+  (function () {
+    const canvas  = document.getElementById('confetti-canvas');
+    const ctx     = canvas.getContext('2d');
+
+    // Brand palette — warm, editorial, no cartoonish brights
+    const COLORS = [
+      '#F7838D',  // signature pink
+      '#F0A8AD',  // blush
+      '#E8C9A0',  // warm champagne/gold
+      '#C9A97A',  // deeper tan/gold
+      '#D9CFC1',  // envelope beige
+      '#B8AFA5',  // warm grey-taupe
+    ];
+
+    const AMBIENT = 38;   // always-on piece count
+    let pieces    = [];
+    let W = 0, H = 0;
+
+    function resize() {
+      W = canvas.width  = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+    }
+
+    function makePiece(opts = {}) {
+      const burst = opts.burst || false;
+      const color = COLORS[Math.floor(Math.random() * COLORS.length)];
+      // Alternate between thin ribbons and small diamonds for variety
+      const isRibbon = Math.random() > 0.35;
+      return {
+        x:         burst ? W * 0.5 + (Math.random() - 0.5) * W * 0.6
+                         : Math.random() * W,
+        y:         burst ? H * 0.45 + (Math.random() - 0.5) * 80
+                         : opts.scatter ? Math.random() * H
+                         : -14,
+        w:         isRibbon ? 2 + Math.random() * 3  : 5 + Math.random() * 4,
+        h:         isRibbon ? 9 + Math.random() * 12 : 5 + Math.random() * 4,
+        color,
+        rot:       Math.random() * Math.PI * 2,
+        rotV:      (Math.random() - 0.5) * 0.05,
+        vx:        burst ? (Math.random() - 0.5) * 7
+                         : (Math.random() - 0.5) * 0.6,
+        vy:        burst ? -(3 + Math.random() * 5)
+                         : 0.5 + Math.random() * 0.9,
+        alpha:     0.55 + Math.random() * 0.45,
+        ambient:   !burst,
+      };
+    }
+
+    function initAmbient() {
+      pieces = [];
+      for (let i = 0; i < AMBIENT; i++) {
+        pieces.push(makePiece({ scatter: true }));
+      }
+    }
+
+    function burst(count = 70) {
+      for (let i = 0; i < count; i++) {
+        pieces.push(makePiece({ burst: true }));
+      }
+    }
+
+    function tick() {
+      ctx.clearRect(0, 0, W, H);
+
+      for (let i = pieces.length - 1; i >= 0; i--) {
+        const p = pieces[i];
+        p.x   += p.vx;
+        p.y   += p.vy;
+        p.rot += p.rotV;
+        p.vy  += 0.018; // gravity — gentle
+
+        // Slight horizontal drift
+        p.vx += (Math.random() - 0.5) * 0.012;
+        p.vx  = Math.max(-1.5, Math.min(1.5, p.vx));
+
+        if (p.y > H + 20) {
+          if (p.ambient) {
+            // Recycle ambient pieces
+            Object.assign(p, makePiece({}));
+          } else {
+            pieces.splice(i, 1);
+          }
+          continue;
+        }
+
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.rot);
+        ctx.globalAlpha = p.alpha;
+        ctx.fillStyle   = p.color;
+        ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+        ctx.restore();
+      }
+
+      requestAnimationFrame(tick);
+    }
+
+    resize();
+    window.addEventListener('resize', resize);
+    initAmbient();
+    tick();
+
+    // Expose burst so the form success can trigger a celebration
+    window._confettiBurst = burst;
+  })();
 </script>
 </body>
 </html>

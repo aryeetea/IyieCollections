@@ -10,7 +10,8 @@
       "Bash(npm install *)",
       "Bash(npx playwright *)",
       "Read(//tmp/**)",
-      "Read(//private/tmp/**)"
+      "Read(//private/tmp/**)",
+      "Bash(node server.js)"
     ]
   }
 }
