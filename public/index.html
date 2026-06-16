@@ -388,28 +388,29 @@
       pointer-events: none;
     }
 
-    /* ── 3D background watermark ── */
-    /* Fixed overlay; positioner places it at the envelope's location */
+    /* ── 3D watermark — in-flow, sits below the envelope ── */
     .bg-3d {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 0;
+      position: relative;
+      width: min(480px, 92vw);
+      height: 100px;
       perspective: 1100px;
+      pointer-events: none;
+      overflow: visible;
+      margin-top: 0.6rem;
     }
 
-    /* Positioned at the envelope (roughly 60% down the viewport) */
     .bg-3d-positioner {
       position: absolute;
-      top: 60%;
+      top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
     }
 
     .bg-3d-word {
+      display: block;
       font-family: 'Noto Serif Display', serif;
       font-weight: 300;
-      font-size: clamp(140px, 20vw, 260px);
+      font-size: clamp(120px, 17vw, 220px);
       color: rgba(247,131,141,0.18);
       -webkit-text-stroke: 1.5px rgba(247,131,141,0.22);
       letter-spacing: 0.2em;
@@ -420,7 +421,7 @@
       animation: watermark-spin 12s linear infinite;
     }
 
-    /* Full 360° — pink, centered on the envelope */
+    /* Full 360° spin */
     @keyframes watermark-spin {
       from { transform: rotateY(0deg)   rotateX(10deg); }
       to   { transform: rotateY(360deg) rotateX(10deg); }
@@ -434,11 +435,6 @@
       z-index: 100;
     }
 
-    /* Keep page content layered above background */
-    .page {
-      position: relative;
-      z-index: 1;
-    }
 
     @media (max-width: 480px) {
       .logo { font-size: 64px; }
@@ -450,13 +446,6 @@
   </style>
 </head>
 <body>
-
-<!-- 3D rotating watermark -->
-<div class="bg-3d" aria-hidden="true">
-  <div class="bg-3d-positioner">
-    <div class="bg-3d-word">IYIÉ</div>
-  </div>
-</div>
 
 <!-- Confetti layer -->
 <canvas id="confetti-canvas"></canvas>
@@ -514,6 +503,13 @@
   </div>
 
   <p class="tap-hint" id="tap-hint" onclick="openEnvelope()">Open me</p>
+
+  <!-- 3D rotating watermark — sits below the envelope in normal flow -->
+  <div class="bg-3d" aria-hidden="true">
+    <div class="bg-3d-positioner">
+      <div class="bg-3d-word">IYIÉ</div>
+    </div>
+  </div>
 
   <div class="sent-msg" id="sent-msg">
     <p>On its way to you.<br>Expect something beautifully soon.</p>
