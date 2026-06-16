@@ -404,22 +404,22 @@
     .bg-3d-word {
       font-family: 'Noto Serif Display', serif;
       font-weight: 300;
-      font-size: clamp(110px, 16vw, 210px);
-      color: transparent;
-      -webkit-text-stroke: 1px rgba(26,17,9,0.038);
-      letter-spacing: 0.22em;
+      font-size: clamp(130px, 18vw, 240px);
+      color: rgba(26,17,9,0.06);
+      -webkit-text-stroke: 1.5px rgba(26,17,9,0.07);
+      letter-spacing: 0.2em;
       white-space: nowrap;
       -webkit-user-select: none;
       user-select: none;
       will-change: transform;
-      opacity: 0.85;
-      animation: watermark-spin 36s linear infinite;
+      animation: watermark-sway 9s ease-in-out infinite;
       transform-origin: center center;
     }
 
-    @keyframes watermark-spin {
-      from { transform: rotateY(0deg) rotateX(8deg); }
-      to   { transform: rotateY(360deg) rotateX(8deg); }
+    /* Pendulum sway — always visible, never disappears */
+    @keyframes watermark-sway {
+      0%, 100% { transform: rotateY(-22deg) rotateX(6deg); }
+      50%       { transform: rotateY(22deg)  rotateX(6deg); }
     }
 
     /* ── Confetti canvas ── */
