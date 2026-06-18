@@ -8,16 +8,17 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --bg:        #F2EDE2;
-      --dark:      #1a1109;
-      --pink:      #F7838D;
-      --pink-deep: #d46870;
-      --muted:     rgba(26,17,9,0.42);
-      --border:    rgba(26,17,9,0.13);
-      --env:       #E6DDD0;
-      --env-flap:  #D9CFC1;
-      --env-fold:  #D0C7B8;
-      --env-front: #EDE5D8;
+      --bg:        #F5F0E8;
+      --dark:      #0c0c0c;
+      --red:       #9B1B30;
+      --pink:      #D4848C;
+      --pink-deep: #b8686f;
+      --muted:     rgba(12,12,12,0.38);
+      --border:    rgba(12,12,12,0.1);
+      --env:       #141414;
+      --env-flap:  #0c0c0c;
+      --env-fold:  #1e1e1e;
+      --env-front: #181818;
     }
 
     html, body {
@@ -62,7 +63,7 @@
       margin-bottom: 0.3rem;
     }
 
-    .logo em { font-style: italic; color: var(--pink); }
+    .logo em { font-style: italic; color: var(--red); }
 
     .logo-sub {
       font-size: 9px;
@@ -89,8 +90,8 @@
       left: 50%;
       width: min(428px, 86vw);
       height: 380px;
-      background: #fff;
-      border-radius: 3px 3px 0 0;
+      background: #FAF7F2;
+      border-radius: 0;
       z-index: 1;
       will-change: transform;
       /* Pushed down below wrapper — fully hidden */
@@ -128,19 +129,20 @@
 
     .field input {
       width: 100%;
-      background: var(--bg);
-      border: 1px solid var(--border);
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--border);
       color: var(--dark);
-      padding: 12px 20px;
+      padding: 10px 4px;
       font-size: 13px;
       font-family: 'DM Sans', sans-serif;
-      border-radius: 40px;
+      border-radius: 0;
       outline: none;
       text-align: center;
       transition: border-color 0.2s;
     }
 
-    .field input:focus { border-color: rgba(26,17,9,0.3); }
+    .field input:focus { border-color: var(--red); }
     .field input::placeholder { color: rgba(26,17,9,0.25); }
 
     .btn {
@@ -149,13 +151,13 @@
       color: var(--bg);
       border: none;
       padding: 13px;
-      font-size: 10px;
+      font-size: 9px;
       letter-spacing: 5px;
       text-transform: uppercase;
       font-family: 'DM Sans', sans-serif;
-      font-weight: 600;
+      font-weight: 500;
       cursor: pointer;
-      border-radius: 40px;
+      border-radius: 0;
       margin-top: 6px;
       transition: opacity 0.2s, transform 0.1s;
       position: relative;
@@ -205,8 +207,8 @@
     .success-mark {
       font-size: 9px;
       letter-spacing: 5px;
-      color: var(--pink);
-      font-weight: 600;
+      color: var(--red);
+      font-weight: 500;
       text-transform: uppercase;
       margin-bottom: 0.8rem;
     }
@@ -220,7 +222,7 @@
       color: var(--dark);
     }
 
-    .success h2 em { font-style: italic; color: var(--pink); }
+    .success h2 em { font-style: italic; color: var(--red); }
     .success p { font-size: 13px; color: var(--muted); line-height: 1.85; }
 
     /* ── Envelope ──
@@ -251,7 +253,7 @@
 
     .fold-l { background: var(--env-fold); clip-path: polygon(0 0, 50% 50%, 0 100%); }
     .fold-r { background: var(--env-fold); clip-path: polygon(100% 0, 50% 50%, 100% 100%); }
-    .fold-b { background: #c8bfb0;         clip-path: polygon(0 100%, 50% 44%, 100% 100%); }
+    .fold-b { background: #0a0a0a;         clip-path: polygon(0 100%, 50% 44%, 100% 100%); }
 
     /* Envelope front — covers the paper */
     .env-front {
@@ -270,7 +272,7 @@
       width: 44px;
       height: 44px;
       border-radius: 50%;
-      background: var(--pink);
+      background: var(--red);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -279,7 +281,7 @@
       font-size: 8px;
       letter-spacing: 1px;
       color: #fff;
-      box-shadow: 0 2px 10px rgba(247,131,141,0.38);
+      box-shadow: 0 2px 12px rgba(155,27,48,0.45);
       pointer-events: none;
     }
 
