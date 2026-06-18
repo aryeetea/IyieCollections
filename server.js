@@ -66,7 +66,7 @@ app.post('/subscribe', async (req, res) => {
       from: process.env.FROM_EMAIL || 'IYIÉ Style <onboarding@resend.dev>',
       to: email,
       subject: `Welcome to the circle${firstName ? `, ${firstName}` : ''} ✦`,
-      html: welcomeEmailHTML(firstName || 'babe')
+      html: welcomeEmailHTML(firstName || 'babe', email)
     });
   } catch (err) {
     console.error('Welcome email failed:', err.message);
@@ -196,7 +196,8 @@ function adminNotifyHTML({ firstName, email, total }) {
 </body></html>`;
 }
 
-function welcomeEmailHTML(firstName) {
+function welcomeEmailHTML(firstName, email) {
+  const unsubUrl = `${process.env.SITE_URL || 'http://localhost:3000'}/unsubscribe?email=${encodeURIComponent(email)}`;
   return `<!DOCTYPE html>
 <html><head><meta charset="UTF-8"/>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Display:ital,wght@0,300;1,300&display=swap" rel="stylesheet"/>
@@ -231,7 +232,7 @@ function welcomeEmailHTML(firstName) {
     <p style="font-family:'Noto Serif Display',Georgia,serif;font-size:18px;color:#F7838D;letter-spacing:4px;margin:0 0 10px;">IYIÉ</p>
     <p style="font-size:10px;color:#555;margin:0;line-height:1.8;">
       You're receiving this because you joined the IYIÉ inner circle.<br/>
-      <a href="{{UNSUBSCRIBE_URL}}" style="color:#F7838D;text-decoration:none;">Unsubscribe</a>
+      <a href="${unsubUrl}" style="color:#F7838D;text-decoration:none;">Unsubscribe</a>
     </p>
   </td></tr>
 

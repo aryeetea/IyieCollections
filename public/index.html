@@ -235,14 +235,6 @@
       perspective-origin: center top;
       will-change: transform, opacity;
       cursor: pointer;
-      animation: env-float 4s ease-in-out infinite;
-    }
-
-    .env.no-float { animation: none; }
-
-    @keyframes env-float {
-      0%, 100% { translate: 0 0; }
-      50%       { translate: 0 -10px; }
     }
 
     /* Envelope back — fold diamond pattern */
@@ -308,18 +300,6 @@
     }
 
     .env-flap.open { transform: rotateX(-175deg); }
-
-    /* ── Bounce toward camera ── */
-    @keyframes env-bounce {
-      0%   { scale: 1;    translate: 0 0;     rotate: 0deg; }
-      22%  { scale: 1.13; translate: 0 -18px; rotate: -2.5deg; }
-      44%  { scale: 0.96; translate: 0 4px;   rotate: 0.5deg; }
-      64%  { scale: 1.05; translate: 0 -8px;  rotate: -1deg; }
-      82%  { scale: 1;    translate: 0 2px;   rotate: 0deg; }
-      100% { scale: 1;    translate: 0 0;     rotate: 0deg; }
-    }
-
-    .env.bouncing { animation: env-bounce 0.75s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
 
     /* ── Ship away ── */
     @keyframes env-fly {
@@ -388,67 +368,15 @@
       pointer-events: none;
     }
 
-    /* ── 3D watermark — in-flow, sits below the envelope ── */
-    .bg-3d {
-      position: relative;
-      width: min(480px, 92vw);
-      height: 100px;
-      perspective: 1100px;
-      pointer-events: none;
-      overflow: visible;
-      margin-top: 0.6rem;
-    }
-
-    .bg-3d-positioner {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
-
-    .bg-3d-word {
-      display: block;
-      font-family: 'Noto Serif Display', serif;
-      font-weight: 300;
-      font-size: clamp(120px, 17vw, 220px);
-      color: rgba(247,131,141,0.18);
-      -webkit-text-stroke: 1.5px rgba(247,131,141,0.22);
-      letter-spacing: 0.2em;
-      white-space: nowrap;
-      -webkit-user-select: none;
-      user-select: none;
-      will-change: transform;
-      animation: watermark-spin 12s linear infinite;
-    }
-
-    /* Full 360° spin */
-    @keyframes watermark-spin {
-      from { transform: rotateY(0deg)   rotateX(10deg); }
-      to   { transform: rotateY(360deg) rotateX(10deg); }
-    }
-
-    /* ── Confetti canvas ── */
-    #confetti-canvas {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 100;
-    }
-
-
     @media (max-width: 480px) {
       .logo { font-size: 64px; }
       .paper { height: 350px; padding: 20px 20px 0; }
       .env { height: 148px; }
       .env-flap { height: 74px; }
-      .bg-3d-word { font-size: 88px; }
     }
   </style>
 </head>
 <body>
-
-<!-- Confetti layer -->
-<canvas id="confetti-canvas"></canvas>
 
 <div class="page">
 
@@ -504,13 +432,6 @@
 
   <p class="tap-hint" id="tap-hint" onclick="openEnvelope()">Open me</p>
 
-  <!-- 3D rotating watermark — sits below the envelope in normal flow -->
-  <div class="bg-3d" aria-hidden="true">
-    <div class="bg-3d-positioner">
-      <div class="bg-3d-word">IYIÉ</div>
-    </div>
-  </div>
-
   <div class="sent-msg" id="sent-msg">
     <p>On its way to you.<br>Expect something beautifully soon.</p>
   </div>
@@ -530,7 +451,6 @@
     if (state !== 'closed') return;
     state = 'opening';
 
-    env.classList.add('no-float');
     tapHint.classList.add('hidden');
 
     // 1. Flap swings open
@@ -574,9 +494,6 @@
       if (res.ok) {
         state = 'closing';
 
-        // Celebrate!
-        if (window._confettiBurst) window._confettiBurst(80);
-
         // Show success on the paper
         document.getElementById('form-state').style.display = 'none';
         if (firstName) {
@@ -594,14 +511,8 @@
         // 5. Flap closes
         setTimeout(() => flap.classList.remove('open'), 2050);
 
-        // 6. Bounce toward camera (overflow stays visible from open state)
-        setTimeout(() => env.classList.add('bouncing'), 2850);
-
-        // 7. Ship it
-        setTimeout(() => {
-          env.classList.remove('bouncing');
-          env.classList.add('flying');
-        }, 3620);
+        // 6. Ship it
+        setTimeout(() => env.classList.add('flying'), 2850);
 
         // 8. Final message
         setTimeout(() => sentMsg.classList.add('visible'), 4100);
@@ -619,113 +530,5 @@
   });
 </script>
 
-<script>
-  /* ── Confetti engine ── */
-  (function () {
-    const canvas  = document.getElementById('confetti-canvas');
-    const ctx     = canvas.getContext('2d');
-
-    // Brand palette — warm, editorial, no cartoonish brights
-    const COLORS = [
-      '#F7838D',  // signature pink
-      '#F0A8AD',  // blush
-      '#E8C9A0',  // warm champagne/gold
-      '#C9A97A',  // deeper tan/gold
-      '#D9CFC1',  // envelope beige
-      '#B8AFA5',  // warm grey-taupe
-    ];
-
-    const AMBIENT = 38;   // always-on piece count
-    let pieces    = [];
-    let W = 0, H = 0;
-
-    function resize() {
-      W = canvas.width  = window.innerWidth;
-      H = canvas.height = window.innerHeight;
-    }
-
-    function makePiece(opts = {}) {
-      const burst = opts.burst || false;
-      const color = COLORS[Math.floor(Math.random() * COLORS.length)];
-      // Alternate between thin ribbons and small diamonds for variety
-      const isRibbon = Math.random() > 0.35;
-      return {
-        x:         burst ? W * 0.5 + (Math.random() - 0.5) * W * 0.6
-                         : Math.random() * W,
-        y:         burst ? H * 0.45 + (Math.random() - 0.5) * 80
-                         : opts.scatter ? Math.random() * H
-                         : -14,
-        w:         isRibbon ? 2 + Math.random() * 3  : 5 + Math.random() * 4,
-        h:         isRibbon ? 9 + Math.random() * 12 : 5 + Math.random() * 4,
-        color,
-        rot:       Math.random() * Math.PI * 2,
-        rotV:      (Math.random() - 0.5) * 0.05,
-        vx:        burst ? (Math.random() - 0.5) * 7
-                         : (Math.random() - 0.5) * 0.6,
-        vy:        burst ? -(3 + Math.random() * 5)
-                         : 0.5 + Math.random() * 0.9,
-        alpha:     0.55 + Math.random() * 0.45,
-        ambient:   !burst,
-      };
-    }
-
-    function initAmbient() {
-      pieces = [];
-      for (let i = 0; i < AMBIENT; i++) {
-        pieces.push(makePiece({ scatter: true }));
-      }
-    }
-
-    function burst(count = 70) {
-      for (let i = 0; i < count; i++) {
-        pieces.push(makePiece({ burst: true }));
-      }
-    }
-
-    function tick() {
-      ctx.clearRect(0, 0, W, H);
-
-      for (let i = pieces.length - 1; i >= 0; i--) {
-        const p = pieces[i];
-        p.x   += p.vx;
-        p.y   += p.vy;
-        p.rot += p.rotV;
-        p.vy  += 0.018; // gravity — gentle
-
-        // Slight horizontal drift
-        p.vx += (Math.random() - 0.5) * 0.012;
-        p.vx  = Math.max(-1.5, Math.min(1.5, p.vx));
-
-        if (p.y > H + 20) {
-          if (p.ambient) {
-            // Recycle ambient pieces
-            Object.assign(p, makePiece({}));
-          } else {
-            pieces.splice(i, 1);
-          }
-          continue;
-        }
-
-        ctx.save();
-        ctx.translate(p.x, p.y);
-        ctx.rotate(p.rot);
-        ctx.globalAlpha = p.alpha;
-        ctx.fillStyle   = p.color;
-        ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
-        ctx.restore();
-      }
-
-      requestAnimationFrame(tick);
-    }
-
-    resize();
-    window.addEventListener('resize', resize);
-    initAmbient();
-    tick();
-
-    // Expose burst so the form success can trigger a celebration
-    window._confettiBurst = burst;
-  })();
-</script>
 </body>
 </html>
