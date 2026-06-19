@@ -263,7 +263,7 @@
 
     <div id="form-state">
       <div class="fields">
-        <input type="text"  id="firstName" placeholder="Your name"     autocomplete="given-name"/>
+        <input type="text"  id="firstName" placeholder="Your name"     autocomplete="given-name" autocapitalize="words"/>
         <input type="email" id="email"     placeholder="Email address" autocomplete="email" required/>
       </div>
       <button type="button" class="btn" id="submit-btn" onclick="handleSubmit()">Join the circle</button>
@@ -330,6 +330,12 @@
       btn.classList.remove('loading');
     }
   }
+
+  document.getElementById('firstName').addEventListener('input', function () {
+    const pos = this.selectionStart;
+    this.value = this.value.replace(/\b\w/g, c => c.toUpperCase());
+    this.setSelectionRange(pos, pos);
+  });
 
   document.addEventListener('keydown', e => {
     if (e.key === 'Enter') handleSubmit();

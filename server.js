@@ -31,7 +31,11 @@ app.get('/admin', (req, res) => {
 
 // ── Public: Subscribe ────────────────────────────────────
 app.post('/subscribe', async (req, res) => {
-  const { email, firstName } = req.body;
+  const { email } = req.body;
+  const firstName = (req.body.firstName || '')
+    .trim()
+    .replace(/\b\w/g, c => c.toUpperCase());
+
   if (!email || !email.includes('@')) {
     return res.status(400).json({ error: 'Valid email required.' });
   }
