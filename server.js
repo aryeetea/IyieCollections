@@ -235,8 +235,11 @@ function welcomeEmailHTML(firstName, email) {
     <h1 style="font-family:'Noto Serif Display',Georgia,serif;font-size:30px;font-weight:300;color:#0c0c0c;margin:0 0 16px;line-height:1.3;">
       Welcome to the circle,<br><em style="color:#9B1B30;">${firstName}.</em>
     </h1>
-    <p style="font-size:14px;color:#888;line-height:1.8;margin:0 0 28px;max-width:360px;display:inline-block;">
+    <p style="font-size:14px;color:#888;line-height:1.8;margin:0 0 20px;max-width:360px;display:inline-block;">
       You'll be the first to know about new drops, exclusive edits, and everything IYIÉ — curated for the girl who does it well.
+    </p>
+    <p style="font-size:12px;color:#bbb;line-height:1.7;margin:0 0 28px;padding:14px 20px;background:#f9f6f1;border-left:2px solid #9B1B30;text-align:left;max-width:360px;display:inline-block;">
+      To make sure you never miss a drop, add <strong style="color:#9B1B30;">hello@iyiecollection.co</strong> to your contacts.
     </p>
   </td></tr>
 
