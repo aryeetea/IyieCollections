@@ -35,9 +35,8 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 3rem 1.5rem 9rem;
-      gap: 2.2rem;
-      position: relative;
+      padding: 3rem 1.5rem 3rem;
+      gap: 2rem;
     }
 
     /* ── Brand ── */
@@ -70,25 +69,49 @@
       margin-top: 0.5rem;
     }
 
-    /* ── Scene: card sticking out of envelope ── */
-    .env-scene {
+    /* ── Envelope wrapper ── */
+    .env-wrapper {
       position: relative;
       width: min(480px, 92vw);
+      overflow: hidden;
     }
 
-    /* ── Invitation card ── */
-    .card {
-      position: relative;
+    /* Mask below envelope so paper doesn't peek underneath */
+    .env-wrapper::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: -20px; right: -20px;
+      height: 80px;
+      background: var(--bg);
+      z-index: 5;
+      pointer-events: none;
+    }
+
+    /* ── Invitation card / paper ── */
+    .paper {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: min(428px, 86vw);
+      height: 390px;
       background: var(--cream);
-      border: 1px solid rgba(155,27,48,0.12);
-      padding: 1.8rem 1.8rem 1.4rem;
-      margin-bottom: -18px; /* tucks bottom edge into envelope */
-      z-index: 3;
-      box-shadow: 0 -4px 32px rgba(37,16,16,0.08), 0 2px 8px rgba(37,16,16,0.05);
+      border: 1px solid rgba(155,27,48,0.1);
+      z-index: 1;
+      will-change: transform;
+      transform: translateX(-50%) translateY(390px);
+      visibility: hidden;
+      transition: transform 0.82s cubic-bezier(0.35, 0, 0.15, 1);
+      padding: 22px 24px 0;
     }
 
-    /* Red top edge accent */
-    .card::before {
+    .paper.out {
+      transform: translateX(-50%) translateY(-130px);
+      box-shadow: 0 -6px 40px rgba(37,16,16,0.1), 0 2px 8px rgba(37,16,16,0.05);
+    }
+
+    /* Red top stripe on card */
+    .paper::before {
       content: '';
       position: absolute;
       top: 0; left: 0; right: 0;
@@ -96,31 +119,22 @@
       background: linear-gradient(90deg, var(--red), var(--pink));
     }
 
-    .card-inner {
-      display: flex;
-      flex-direction: column;
-      gap: 1.25rem;
+    .card-rule {
+      width: 24px;
+      height: 1px;
+      background: var(--red);
+      margin: 0 auto 0.85rem;
+      opacity: 0.5;
     }
 
-    .card-header { text-align: center; }
-
     .card-heading {
-      font-size: 0.65rem;
+      font-size: 0.62rem;
       letter-spacing: 0.32em;
       text-transform: uppercase;
       color: var(--pink);
-      margin-bottom: 0.3rem;
+      text-align: center;
+      margin-bottom: 1rem;
     }
-
-    .card-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(1.4rem, 4vw, 1.75rem);
-      font-weight: 300;
-      line-height: 1.2;
-      color: var(--dark);
-    }
-
-    .card-title em { color: var(--red); font-style: italic; }
 
     /* ── Form ── */
     #signup-form {
@@ -133,26 +147,22 @@
       width: 100%;
       background: rgba(240,230,210,0.5);
       border: 1px solid rgba(37,16,16,0.1);
-      border-bottom: 1px solid rgba(155,27,48,0.25);
+      border-bottom: 1px solid rgba(155,27,48,0.22);
       color: var(--dark);
       padding: 0.85rem 1rem;
       font-family: 'Manrope', sans-serif;
       font-size: 0.88rem;
       outline: none;
-      transition: border-color 0.2s, background 0.2s;
+      transition: border-color 0.2s;
     }
 
-    .field input:focus {
-      border-color: var(--red);
-      background: rgba(240,230,210,0.3);
-    }
-
+    .field input:focus { border-color: var(--red); }
     .field input::placeholder { color: rgba(37,16,16,0.28); }
 
     .btn {
       width: 100%;
       background: var(--red);
-      color: #F7F1E7;
+      color: var(--cream);
       border: none;
       padding: 1rem;
       font-family: 'Manrope', sans-serif;
@@ -175,7 +185,7 @@
       width: 14px; height: 14px;
       margin: -7px 0 0 -7px;
       border: 1.5px solid rgba(247,241,231,0.3);
-      border-top-color: #F7F1E7;
+      border-top-color: var(--cream);
       border-radius: 50%;
       animation: spin 0.8s linear infinite;
     }
@@ -189,12 +199,13 @@
     }
 
     .form-note {
-      font-size: 0.64rem;
-      letter-spacing: 0.05em;
+      font-size: 0.63rem;
+      letter-spacing: 0.04em;
       color: var(--muted);
       text-align: center;
-      padding-top: 0.85rem;
-      border-top: 1px solid rgba(155,27,48,0.1);
+      margin-top: 0.85rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid rgba(155,27,48,0.08);
     }
 
     /* ── Success ── */
@@ -208,7 +219,7 @@
     }
 
     .success-mark {
-      font-size: 0.64rem;
+      font-size: 0.63rem;
       letter-spacing: 0.32em;
       text-transform: uppercase;
       color: var(--red);
@@ -217,7 +228,7 @@
 
     .success h2 {
       font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(1.6rem, 5vw, 2.2rem);
+      font-size: clamp(1.6rem, 5vw, 2.1rem);
       font-weight: 300;
       line-height: 1.15;
       color: var(--dark);
@@ -231,14 +242,15 @@
       line-height: 1.8;
     }
 
-    /* ── Envelope body ── */
-    .envelope {
+    /* ── Envelope ── */
+    .env {
       position: relative;
       width: 100%;
       height: 152px;
       z-index: 2;
       perspective: 700px;
       perspective-origin: center top;
+      cursor: pointer;
     }
 
     .env-back {
@@ -259,7 +271,6 @@
       z-index: 1;
     }
 
-    /* Wax seal */
     .env-seal {
       position: absolute;
       top: 50%; left: 50%;
@@ -274,13 +285,12 @@
       font-style: italic;
       font-size: 8px;
       letter-spacing: 1px;
-      color: #F7F1E7;
-      box-shadow: 0 2px 12px rgba(155,27,48,0.4);
+      color: var(--cream);
+      box-shadow: 0 2px 12px rgba(155,27,48,0.35);
       pointer-events: none;
       z-index: 3;
     }
 
-    /* Flap — already open */
     .env-flap {
       position: absolute;
       top: 0; left: 0;
@@ -288,17 +298,62 @@
       background: var(--fold);
       clip-path: polygon(0 0, 100% 0, 50% 100%);
       transform-origin: center top;
-      transform: rotateX(-175deg);
+      transform: rotateX(0deg);
       backface-visibility: hidden;
+      transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
       z-index: 2;
     }
 
-    /* Success: whole scene flies away */
-    @keyframes fly {
-      0%   { transform: translate(0, 0)        scale(1)    rotate(0deg);  opacity: 1; }
-      100% { transform: translate(110vw, -60vh) scale(0.08) rotate(18deg); opacity: 0; }
+    .env-flap.open { transform: rotateX(-175deg); }
+
+    /* Fly away */
+    @keyframes env-fly {
+      0%   { translate: 0 0;          scale: 1;    rotate: 0deg;  opacity: 1; }
+      100% { translate: 110vw -60vh;  scale: 0.08; rotate: 20deg; opacity: 0; }
     }
-    .env-scene.flying { animation: fly 1s cubic-bezier(0.5, 0, 0.8, 0) forwards; }
+    .env.flying { animation: env-fly 1s cubic-bezier(0.5, 0, 0.8, 0) forwards; }
+
+    /* ── Tap hint ── */
+    .tap-hint {
+      font-size: 0.65rem;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--pink);
+      cursor: pointer;
+      -webkit-user-select: none;
+      user-select: none;
+      transition: color 0.2s;
+    }
+
+    .tap-hint:hover { color: var(--red); }
+    .tap-hint.hidden { opacity: 0; pointer-events: none; }
+
+    /* ── Watermark ── */
+    .watermark-wrap {
+      perspective: 1400px;
+      pointer-events: none;
+      overflow: visible;
+      margin-top: 0.2rem;
+    }
+
+    .watermark-text {
+      display: block;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.8rem, 7vw, 5.5rem);
+      font-weight: 300;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: rgba(155,27,48,0.4);
+      -webkit-text-stroke: 1px rgba(155,27,48,0.5);
+      white-space: nowrap;
+      animation: pendulum 4s ease-in-out infinite;
+    }
+
+    @keyframes pendulum {
+      0%   { transform: rotateY(-55deg) rotateX(10deg); }
+      50%  { transform: rotateY(55deg)  rotateX(10deg); }
+      100% { transform: rotateY(-55deg) rotateX(10deg); }
+    }
 
     /* ── Sent message ── */
     .sent-msg {
@@ -315,47 +370,17 @@
       color: var(--pink);
     }
 
-    /* ── 3D watermark ── */
-    .watermark {
-      position: fixed;
-      bottom: -1rem;
-      left: 50%;
-      transform: translateX(-50%);
-      perspective: 1400px;
-      pointer-events: none;
-      z-index: 0;
-      white-space: nowrap;
-    }
-
-    .watermark-text {
-      display: block;
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(3rem, 7vw, 6rem);
-      font-weight: 300;
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      color: rgba(155,27,48,0.35);
-      -webkit-text-stroke: 1px rgba(155,27,48,0.45);
-      animation: pendulum 4s ease-in-out infinite;
-    }
-
-    @keyframes pendulum {
-      0%   { transform: rotateY(-60deg) rotateX(10deg); }
-      50%  { transform: rotateY(60deg)  rotateX(10deg); }
-      100% { transform: rotateY(-60deg) rotateX(10deg); }
-    }
-
     @keyframes spin { to { transform: rotate(360deg); } }
-
     @keyframes rise {
       from { opacity: 0; transform: translateY(10px); }
       to   { opacity: 1; transform: translateY(0); }
     }
 
     @media (max-width: 480px) {
-      .card { padding: 1.4rem 1.2rem 1.2rem; }
-      .envelope { height: 134px; }
-      .env-flap { height: 67px; }
+      .paper { height: 370px; padding: 18px 18px 0; }
+      .env { height: 136px; }
+      .env-flap { height: 68px; }
+      .watermark-text { font-size: 2.6rem; }
     }
   </style>
 </head>
@@ -369,42 +394,34 @@
     <p class="tagline">You can't buy taste. But you can be first.</p>
   </header>
 
-  <div class="env-scene" id="env-scene">
+  <div class="env-wrapper" id="env-wrapper">
 
-    <!-- Invitation card sticking up out of envelope -->
-    <div class="card">
-      <div class="card-inner">
+    <div class="paper" id="paper">
+      <div class="card-rule"></div>
+      <p class="card-heading">You have been cordially selected</p>
 
-        <div class="card-header">
-          <p class="card-heading">You have been cordially selected</p>
-          <h2 class="card-title">Join the circle.<br><em>RSVP below.</em></h2>
-        </div>
+      <div id="form-state">
+        <form id="signup-form">
+          <div class="field">
+            <input type="text" id="firstName" placeholder="Your name" autocomplete="given-name"/>
+          </div>
+          <div class="field">
+            <input type="email" id="email" placeholder="Email address" required autocomplete="email"/>
+          </div>
+          <button type="submit" class="btn" id="submit-btn">RSVP — I'm in</button>
+          <p class="error-msg" id="error-msg"></p>
+        </form>
+        <p class="form-note">No junk mail. Unsubscribe anytime, no hard feelings.</p>
+      </div>
 
-        <div id="form-state">
-          <form id="signup-form">
-            <div class="field">
-              <input type="text" id="firstName" placeholder="Your name" autocomplete="given-name"/>
-            </div>
-            <div class="field">
-              <input type="email" id="email" placeholder="Email address" required autocomplete="email"/>
-            </div>
-            <button type="submit" class="btn" id="submit-btn">RSVP — I'm in</button>
-            <p class="error-msg" id="error-msg"></p>
-          </form>
-          <p class="form-note">No junk mail. Unsubscribe anytime, no hard feelings.</p>
-        </div>
-
-        <div class="success" id="success-section">
-          <span class="success-mark">RSVP accepted</span>
-          <h2>Your name is on<br>the <em>list.</em></h2>
-          <p id="success-msg">Expect a very stylish email soon.</p>
-        </div>
-
+      <div class="success" id="success-section">
+        <span class="success-mark">RSVP accepted</span>
+        <h2>Your name is on<br>the <em>list.</em></h2>
+        <p id="success-msg">Expect a very stylish email soon.</p>
       </div>
     </div>
 
-    <!-- Open envelope sitting below the card -->
-    <div class="envelope">
+    <div class="env" id="envelope" onclick="openEnvelope()">
       <div class="env-back">
         <div class="fold fold-l"></div>
         <div class="fold fold-r"></div>
@@ -413,9 +430,15 @@
       <div class="env-front">
         <div class="env-seal">IYIÉ</div>
       </div>
-      <div class="env-flap"></div>
+      <div class="env-flap" id="flap"></div>
     </div>
 
+  </div>
+
+  <p class="tap-hint" id="tap-hint" onclick="openEnvelope()">Open your invite</p>
+
+  <div class="watermark-wrap" aria-hidden="true">
+    <span class="watermark-text">To Do It Well</span>
   </div>
 
   <div class="sent-msg" id="sent-msg">
@@ -424,18 +447,34 @@
 
 </div>
 
-<div class="watermark" aria-hidden="true">
-  <span class="watermark-text">To Do It Well</span>
-</div>
-
 <script>
-  const scene     = document.getElementById('env-scene');
-  const formState = document.getElementById('form-state');
-  const successSec = document.getElementById('success-section');
-  const sentMsg   = document.getElementById('sent-msg');
+  let state = 'closed';
+
+  const paper   = document.getElementById('paper');
+  const flap    = document.getElementById('flap');
+  const env     = document.getElementById('envelope');
+  const wrapper = document.getElementById('env-wrapper');
+  const tapHint = document.getElementById('tap-hint');
+  const sentMsg = document.getElementById('sent-msg');
+
+  function openEnvelope() {
+    if (state !== 'closed') return;
+    state = 'opening';
+    tapHint.classList.add('hidden');
+    flap.classList.add('open');
+
+    setTimeout(() => {
+      wrapper.style.overflow = 'visible';
+      paper.style.visibility = 'visible';
+      paper.classList.add('out');
+    }, 300);
+
+    setTimeout(() => { state = 'open'; }, 1100);
+  }
 
   document.getElementById('signup-form').addEventListener('submit', async (e) => {
     e.preventDefault();
+    if (state !== 'open') return;
 
     const email     = document.getElementById('email').value.trim();
     const firstName = document.getElementById('firstName').value.trim();
@@ -466,17 +505,24 @@
         return;
       }
 
+      state = 'closing';
       playChime();
 
-      formState.style.display = 'none';
+      document.getElementById('form-state').style.display = 'none';
       if (firstName) {
         document.getElementById('success-msg').textContent =
           `${firstName}, expect a very stylish email soon.`;
       }
-      successSec.style.display = 'flex';
+      document.getElementById('success-section').style.display = 'flex';
 
-      setTimeout(() => scene.classList.add('flying'), 2000);
-      setTimeout(() => sentMsg.classList.add('visible'), 2800);
+      // Slide card back into envelope
+      setTimeout(() => paper.classList.remove('out'), 1800);
+      setTimeout(() => { paper.style.visibility = 'hidden'; }, 2600);
+      setTimeout(() => flap.classList.remove('open'), 2200);
+
+      // Fly away
+      setTimeout(() => env.classList.add('flying'), 3000);
+      setTimeout(() => sentMsg.classList.add('visible'), 3700);
 
     } catch {
       errEl.textContent = 'Connection error. Try again.';
