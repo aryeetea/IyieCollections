@@ -176,6 +176,15 @@
       line-height: 1.8;
     }
 
+    .success-hint {
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-top: 0.5rem;
+      line-height: 1.7;
+    }
+
+    .success-hint strong { color: var(--dark); }
+
     /* ── Watermark ── */
     .watermark-wrap {
       perspective: 1400px;
@@ -266,6 +275,7 @@
       <span class="success-mark">You're in</span>
       <h2>Your name is on<br>the <em>list.</em></h2>
       <p id="success-detail">Expect a very stylish email soon.</p>
+      <p class="success-hint">Can't find it? Check your <strong>Important</strong> folder — Gmail likes to put us there.</p>
     </div>
   </div>
 
@@ -324,6 +334,13 @@
   document.addEventListener('keydown', e => {
     if (e.key === 'Enter') handleSubmit();
   });
+
+  function showToast(msg) {
+    const toast = document.getElementById('toast');
+    document.getElementById('toast-msg').textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 4000);
+  }
 
   function playChime() {
     try {
