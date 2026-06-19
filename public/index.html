@@ -215,9 +215,9 @@
     /* ── Toast ── */
     .toast {
       position: fixed;
-      top: 1.5rem;
+      top: -80px;
       left: 50%;
-      transform: translateX(-50%) translateY(-120%);
+      transform: translateX(-50%);
       background: var(--dark);
       color: var(--cream);
       padding: 0.85rem 1.6rem;
@@ -228,10 +228,10 @@
       letter-spacing: 0.04em;
       white-space: nowrap;
       z-index: 999;
-      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: top 0.4s cubic-bezier(0.16, 1, 0.3, 1);
       pointer-events: none;
     }
-    .toast.show { transform: translateX(-50%) translateY(0); }
+    .toast.show { top: 1.5rem; }
     .toast-dot {
       width: 6px; height: 6px;
       border-radius: 50%;
