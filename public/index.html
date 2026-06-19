@@ -3,31 +3,23 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>IYIÉ Style — Join the Private List</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <title>IYIÉ Style</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Manrope:wght@300;400;500&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg: #0c0a0b;
-      --bg-soft: #171214;
-      --panel: rgba(255, 248, 238, 0.06);
-      --panel-strong: rgba(255, 248, 238, 0.1);
+      --bg:    #0c0a0b;
       --cream: #f4e9dd;
-      --cream-soft: rgba(244, 233, 221, 0.72);
-      --pink: #d49aa4;
-      --red: #a61d33;
-      --red-deep: #7d1226;
-      --line: rgba(244, 233, 221, 0.12);
-      --shadow: 0 24px 80px rgba(0, 0, 0, 0.38);
+      --muted: rgba(244, 233, 221, 0.42);
+      --red:   #a61d33;
+      --pink:  #d49aa4;
+      --line:  rgba(244, 233, 221, 0.1);
     }
 
     html, body {
-      min-height: 100%;
-      background:
-        radial-gradient(circle at top left, rgba(166, 29, 51, 0.24), transparent 35%),
-        radial-gradient(circle at 80% 22%, rgba(212, 154, 164, 0.12), transparent 24%),
-        linear-gradient(180deg, #130d10 0%, #0c0a0b 55%, #120b0d 100%);
+      height: 100%;
+      background: var(--bg);
       color: var(--cream);
       font-family: 'Manrope', sans-serif;
       overflow-x: hidden;
@@ -37,667 +29,296 @@
       content: '';
       position: fixed;
       inset: 0;
-      background-image:
-        linear-gradient(rgba(244, 233, 221, 0.025) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(244, 233, 221, 0.025) 1px, transparent 1px);
-      background-size: 48px 48px;
+      background: radial-gradient(ellipse at 60% 0%, rgba(166, 29, 51, 0.18) 0%, transparent 60%);
       pointer-events: none;
-      opacity: 0.35;
     }
 
     .page {
-      position: relative;
-      width: min(1220px, calc(100vw - 2rem));
-      margin: 0 auto;
-      padding: 1.2rem 0 3rem;
-    }
-
-    .masthead {
+      min-height: 100vh;
       display: flex;
+      flex-direction: column;
       align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-      padding: 1.1rem 0 1.8rem;
+      justify-content: center;
+      padding: 3rem 2rem;
+      gap: 3rem;
     }
 
-    .brand-kicker,
-    .masthead-note,
-    .section-kicker,
-    .mini-kicker {
-      font-size: 0.72rem;
-      letter-spacing: 0.32em;
+    /* ── Brand ── */
+    .brand { text-align: center; }
+
+    .kicker {
+      font-size: 0.68rem;
+      letter-spacing: 0.38em;
       text-transform: uppercase;
-      color: var(--cream-soft);
+      color: var(--muted);
+      margin-bottom: 1rem;
     }
 
-    .brand-lockup {
-      display: flex;
-      flex-direction: column;
-      gap: 0.35rem;
-    }
-
-    .brand-name {
+    .logo {
       font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(2.8rem, 7vw, 5.8rem);
-      line-height: 0.9;
+      font-size: clamp(5rem, 16vw, 11rem);
+      font-weight: 300;
+      line-height: 1;
       letter-spacing: 0.06em;
-      font-weight: 500;
-    }
-
-    .brand-name em { color: var(--red); font-style: italic; }
-
-    .masthead-note {
-      max-width: 16rem;
-      text-align: right;
-      line-height: 1.8;
-    }
-
-    .hero {
-      display: grid;
-      grid-template-columns: minmax(0, 1.08fr) minmax(320px, 0.92fr);
-      gap: 1.35rem;
-      align-items: stretch;
-    }
-
-    .hero-panel,
-    .signup-panel,
-    .story-card {
-      position: relative;
-      overflow: hidden;
-      border: 1px solid var(--line);
-      background: var(--panel);
-      backdrop-filter: blur(18px);
-      box-shadow: var(--shadow);
-    }
-
-    .hero-panel {
-      min-height: 680px;
-      padding: clamp(1.5rem, 3vw, 2.4rem);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      background:
-        linear-gradient(160deg, rgba(12, 10, 11, 0.45), rgba(12, 10, 11, 0.82)),
-        radial-gradient(circle at 14% 12%, rgba(166, 29, 51, 0.6), transparent 26%),
-        radial-gradient(circle at 86% 24%, rgba(212, 154, 164, 0.26), transparent 20%),
-        linear-gradient(140deg, #211316 0%, #0b0909 72%);
-    }
-
-    .hero-panel::after,
-    .signup-panel::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.04), transparent 38%, transparent 68%, rgba(255, 255, 255, 0.02));
-      pointer-events: none;
-    }
-
-    .hero-top {
-      display: flex;
-      justify-content: space-between;
-      gap: 1rem;
-      align-items: start;
-    }
-
-    .hero-badge {
-      border: 1px solid rgba(244, 233, 221, 0.14);
-      padding: 0.8rem 1rem;
-      background: rgba(255, 248, 238, 0.05);
-      text-align: right;
-    }
-
-    .hero-badge strong {
-      display: block;
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.9rem;
-      font-weight: 500;
       color: var(--cream);
     }
 
-    .hero-copy {
-      max-width: 42rem;
-      display: flex;
-      flex-direction: column;
-      gap: 1.3rem;
-      animation: rise 0.9s ease both;
-    }
+    .logo em { color: var(--red); font-style: italic; }
 
-    .hero-copy h1 {
+    .tagline {
       font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(3.4rem, 7vw, 7.2rem);
-      line-height: 0.9;
-      font-weight: 500;
-      letter-spacing: -0.03em;
-    }
-
-    .hero-copy h1 em {
-      color: var(--red);
       font-style: italic;
-      font-weight: 400;
-    }
-
-    .hero-copy p {
-      max-width: 26rem;
-      font-size: 1rem;
-      line-height: 1.9;
-      color: var(--cream-soft);
-    }
-
-    .hero-meta {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 0.8rem;
-      margin-top: 0.6rem;
-    }
-
-    .meta-card {
-      padding: 1rem;
-      border-top: 1px solid rgba(244, 233, 221, 0.16);
-      background: rgba(255, 248, 238, 0.04);
-    }
-
-    .meta-card span {
-      display: block;
-      font-size: 0.72rem;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--pink);
-      margin-bottom: 0.55rem;
-    }
-
-    .meta-card p {
-      font-size: 0.95rem;
-      line-height: 1.7;
-      color: var(--cream);
-    }
-
-    .hero-bottom {
-      display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
-      gap: 1rem;
-      align-items: end;
-    }
-
-    .quote-block {
-      border-left: 2px solid var(--red);
-      padding-left: 1rem;
-    }
-
-    .quote-block p {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.75rem;
-      line-height: 1.2;
-      color: var(--cream);
-      max-width: 24rem;
-    }
-
-    .hero-mark {
-      justify-self: end;
-      width: min(100%, 280px);
-      aspect-ratio: 4 / 5;
-      border: 1px solid rgba(244, 233, 221, 0.14);
-      background:
-        linear-gradient(180deg, rgba(166, 29, 51, 0.85), rgba(53, 8, 15, 0.12)),
-        linear-gradient(140deg, rgba(244, 233, 221, 0.1), transparent 42%);
-      display: flex;
-      align-items: end;
-      justify-content: start;
-      padding: 1.2rem;
-    }
-
-    .hero-mark span {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 3.8rem;
-      line-height: 0.9;
+      font-size: clamp(1rem, 2.5vw, 1.3rem);
+      color: var(--muted);
+      margin-top: 1.2rem;
       letter-spacing: 0.04em;
-      color: rgba(244, 233, 221, 0.92);
     }
 
-    .signup-panel {
-      padding: clamp(1.4rem, 3vw, 2rem);
+    /* ── Form ── */
+    .form-wrap {
+      width: min(380px, 100%);
       display: flex;
       flex-direction: column;
-      gap: 1.2rem;
-      justify-content: space-between;
-      background:
-        linear-gradient(180deg, rgba(25, 17, 20, 0.92), rgba(13, 11, 12, 0.98)),
-        linear-gradient(135deg, rgba(166, 29, 51, 0.18), transparent 38%);
+      gap: 0;
     }
 
-    .signup-intro h2,
-    .story-card h3 {
-      font-family: 'Cormorant Garamond', serif;
-      font-weight: 500;
-      line-height: 0.98;
-      letter-spacing: -0.02em;
-    }
-
-    .signup-intro h2 {
-      font-size: clamp(2.1rem, 5vw, 3.4rem);
-      margin-top: 0.65rem;
-    }
-
-    .signup-intro p,
-    .story-card p,
-    .signup-note {
-      color: var(--cream-soft);
-      line-height: 1.8;
-    }
-
-    .divider {
-      width: 100%;
-      height: 1px;
-      background: linear-gradient(90deg, var(--red), rgba(244, 233, 221, 0.1));
-    }
-
-    .form-shell {
-      display: flex;
-      flex-direction: column;
-      gap: 0.95rem;
-    }
-
-    #signup-form {
-      display: flex;
-      flex-direction: column;
-      gap: 0.95rem;
-    }
-
-    .field-label {
-      display: block;
-      font-size: 0.72rem;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--pink);
-      margin-bottom: 0.45rem;
-    }
+    .field { position: relative; }
 
     .field input {
       width: 100%;
-      border: 1px solid rgba(244, 233, 221, 0.12);
-      background: rgba(255, 248, 238, 0.04);
-      padding: 1rem 1rem;
-      color: var(--cream);
-      font-family: 'Manrope', sans-serif;
-      font-size: 0.98rem;
-      outline: none;
-      transition: border-color 0.2s, transform 0.2s, background 0.2s;
-    }
-
-    .field input:focus {
-      border-color: rgba(212, 154, 164, 0.72);
-      background: rgba(255, 248, 238, 0.07);
-      transform: translateY(-1px);
-    }
-
-    .field input::placeholder { color: rgba(244, 233, 221, 0.26); }
-
-    .btn {
-      width: 100%;
-      border: none;
-      background: linear-gradient(135deg, var(--red), var(--red-deep));
+      background: transparent;
+      border: 1px solid var(--line);
+      border-bottom: none;
       color: var(--cream);
       padding: 1rem 1.2rem;
       font-family: 'Manrope', sans-serif;
-      font-size: 0.78rem;
-      letter-spacing: 0.28em;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: transform 0.15s ease, filter 0.2s ease;
-      position: relative;
-      overflow: hidden;
+      font-size: 0.9rem;
+      outline: none;
+      transition: background 0.2s, border-color 0.2s;
     }
 
-    .btn:hover { filter: brightness(1.08); }
-    .btn:active { transform: translateY(1px); }
+    .field:last-of-type input {
+      border-bottom: 1px solid var(--line);
+    }
+
+    .field input:focus {
+      background: rgba(244, 233, 221, 0.04);
+      border-color: rgba(212, 154, 164, 0.5);
+    }
+
+    .field input::placeholder { color: var(--muted); }
+
+    .btn {
+      width: 100%;
+      background: var(--red);
+      color: var(--cream);
+      border: none;
+      padding: 1.1rem;
+      font-family: 'Manrope', sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      font-weight: 500;
+      cursor: pointer;
+      margin-top: 0.75rem;
+      transition: filter 0.2s;
+      position: relative;
+    }
+
+    .btn:hover { filter: brightness(1.1); }
+    .btn:active { filter: brightness(0.95); }
     .btn.loading { color: transparent; pointer-events: none; }
     .btn.loading::after {
       content: '';
       position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 16px;
-      height: 16px;
-      margin: -8px 0 0 -8px;
-      border: 2px solid rgba(244, 233, 221, 0.28);
+      top: 50%; left: 50%;
+      width: 14px; height: 14px;
+      margin: -7px 0 0 -7px;
+      border: 1.5px solid rgba(244, 233, 221, 0.3);
       border-top-color: var(--cream);
       border-radius: 50%;
       animation: spin 0.8s linear infinite;
     }
 
+    .form-note {
+      font-size: 0.72rem;
+      color: var(--muted);
+      text-align: center;
+      margin-top: 1rem;
+      letter-spacing: 0.04em;
+    }
+
     .error-msg {
       display: none;
-      font-size: 0.85rem;
-      color: #f7bcc6;
-      line-height: 1.6;
+      font-size: 0.82rem;
+      color: var(--pink);
+      text-align: center;
+      margin-top: 0.75rem;
     }
 
-    .signup-note {
-      font-size: 0.9rem;
-      border-top: 1px solid var(--line);
-      padding-top: 1rem;
-    }
-
+    /* ── Success ── */
     .success {
       display: none;
       flex-direction: column;
-      gap: 0.85rem;
-      padding: 0.4rem 0;
-      animation: rise 0.6s ease both;
+      align-items: center;
+      text-align: center;
+      gap: 0.75rem;
+      animation: rise 0.7s ease both;
     }
 
     .success-mark {
-      color: var(--pink);
-      font-size: 0.72rem;
-      letter-spacing: 0.28em;
+      font-size: 0.68rem;
+      letter-spacing: 0.32em;
       text-transform: uppercase;
+      color: var(--red);
     }
 
     .success h2 {
       font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(2.1rem, 5vw, 3.4rem);
-      font-weight: 500;
+      font-size: clamp(2rem, 6vw, 3rem);
+      font-weight: 300;
+      line-height: 1.1;
       color: var(--cream);
     }
 
     .success h2 em { color: var(--red); font-style: italic; }
 
-    .story-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 1.1rem;
-      margin-top: 1.15rem;
+    .success p {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.8;
+      max-width: 22rem;
     }
 
-    .story-card {
-      padding: 1.4rem;
-      min-height: 220px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      background:
-        linear-gradient(180deg, rgba(255, 248, 238, 0.05), rgba(255, 248, 238, 0.02)),
-        linear-gradient(135deg, rgba(166, 29, 51, 0.09), transparent 34%);
-    }
-
-    .story-card h3 {
-      font-size: 2rem;
-      margin: 0.7rem 0 0.85rem;
-    }
-
-    .story-index {
-      font-size: 0.8rem;
-      letter-spacing: 0.24em;
+    /* ── Footer ── */
+    .foot {
+      position: fixed;
+      bottom: 2rem;
+      font-size: 0.65rem;
+      letter-spacing: 0.28em;
       text-transform: uppercase;
-      color: var(--pink);
-    }
-
-    .sent-msg {
-      margin-top: 1.2rem;
-      color: var(--cream-soft);
-      opacity: 0;
-      transform: translateY(10px);
-      transition: opacity 0.5s ease, transform 0.5s ease;
-    }
-
-    .sent-msg.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .sent-msg p {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.5rem;
-      line-height: 1.25;
+      color: rgba(244, 233, 221, 0.18);
     }
 
     @keyframes spin { to { transform: rotate(360deg); } }
     @keyframes rise {
-      from { opacity: 0; transform: translateY(18px); }
-      to { opacity: 1; transform: translateY(0); }
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
 
-    @media (max-width: 980px) {
-      .hero {
-        grid-template-columns: 1fr;
-      }
-
-      .hero-panel {
-        min-height: auto;
-      }
-
-      .hero-bottom,
-      .story-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .hero-mark {
-        justify-self: start;
-        width: 220px;
-      }
-    }
-
-    @media (max-width: 720px) {
-      .page {
-        width: min(100vw - 1rem, 1220px);
-        padding-top: 0.5rem;
-      }
-
-      .masthead {
-        flex-direction: column;
-        align-items: start;
-      }
-
-      .masthead-note {
-        text-align: left;
-      }
-
-      .hero-top,
-      .hero-meta {
-        grid-template-columns: 1fr;
-        display: grid;
-      }
-
-      .hero-copy h1 {
-        font-size: clamp(2.8rem, 16vw, 4.6rem);
-      }
-
-      .hero-panel,
-      .signup-panel,
-      .story-card {
-        padding: 1.2rem;
-      }
+    @media (max-width: 480px) {
+      .page { gap: 2.5rem; }
     }
   </style>
 </head>
 <body>
-  <div class="page">
-    <header class="masthead">
-      <div class="brand-lockup">
-        <span class="brand-kicker">Private list</span>
-        <h1 class="brand-name">IYI<em>É</em></h1>
-      </div>
-      <p class="masthead-note">A darker, sharper edit in black, cream, pink, and red. Early access for the girl who already knows.</p>
-    </header>
 
-    <main class="hero">
-      <section class="hero-panel">
-        <div class="hero-top">
-          <span class="section-kicker">Seasonal preview</span>
-          <div class="hero-badge">
-            <span class="mini-kicker">Now opening</span>
-            <strong>Red room</strong>
-          </div>
-        </div>
+<div class="page">
 
-        <div class="hero-copy">
-          <h1>Enter the list before the next <em>drop</em> lands.</h1>
-          <p>We moved away from the soft waiting-room feel and into something more editorial: richer contrast, darker space, and a stronger red pulse through the experience.</p>
-          <div class="hero-meta">
-            <div class="meta-card">
-              <span>First look</span>
-              <p>Private launch notes, quiet previews, and first access before everyone else.</p>
-            </div>
-            <div class="meta-card">
-              <span>Brand edits</span>
-              <p>Seasonal styling cues, campaign stories, and the mood behind each release.</p>
-            </div>
-            <div class="meta-card">
-              <span>Direct line</span>
-              <p>No clutter. Just the messages worth opening and the drops worth moving for.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="hero-bottom">
-          <div class="quote-block">
-            <p>"Luxury feels louder when the room is dark enough for the red to glow."</p>
-          </div>
-          <div class="hero-mark">
-            <span>09</span>
-          </div>
-        </div>
-      </section>
-
-      <aside class="signup-panel">
-        <div class="signup-intro">
-          <span class="section-kicker">Join the circle</span>
-          <h2>Reserved access. Soft cream against a red-lit night.</h2>
-          <p>Same brand palette, but styled with more atmosphere. The signup stays simple while the experience feels more intentional.</p>
-        </div>
-
-        <div class="divider"></div>
-
-        <div id="form-state" class="form-shell">
-          <form id="signup-form">
-            <div class="field">
-              <label class="field-label" for="firstName">Name</label>
-              <input type="text" id="firstName" placeholder="Your name" autocomplete="given-name"/>
-            </div>
-            <div class="field">
-              <label class="field-label" for="email">Email</label>
-              <input type="email" id="email" placeholder="Email address" required autocomplete="email"/>
-            </div>
-            <button type="submit" class="btn" id="submit-btn">Get on the list</button>
-            <p class="error-msg" id="error-msg"></p>
-          </form>
-          <p class="signup-note">No spam, no clutter, unsubscribe anytime. Just the pieces, previews, and updates that matter.</p>
-        </div>
-
-        <div class="success" id="success-section">
-          <span class="success-mark">Membership confirmed</span>
-          <h2>Welcome inside <em>IYIÉ.</em></h2>
-          <p id="success-msg">You’ll hear from us when the next drop is ready to move.</p>
-        </div>
-
-        <div class="sent-msg" id="sent-msg">
-          <p>Watch your inbox. The red room opens there first.</p>
-        </div>
-      </aside>
-    </main>
-
-    <section class="story-grid">
-      <article class="story-card">
-        <div>
-          <span class="story-index">01 / Palette</span>
-          <h3>Dark space, red highlight.</h3>
-          <p>The cream and pink stay in play, but the red gets to do the emotional work instead of sitting quietly in the corner.</p>
-        </div>
-        <span class="mini-kicker">Editorial contrast</span>
-      </article>
-
-      <article class="story-card">
-        <div>
-          <span class="story-index">02 / Motion</span>
-          <h3>Cleaner, calmer conversion.</h3>
-          <p>The form is immediate and more premium-feeling, with softer motion and less novelty between interest and signup.</p>
-        </div>
-        <span class="mini-kicker">Direct join flow</span>
-      </article>
-
-      <article class="story-card">
-        <div>
-          <span class="story-index">03 / System</span>
-          <h3>One language across public and admin.</h3>
-          <p>The front-of-house and back-of-house now feel like the same brand world instead of two separate experiences.</p>
-        </div>
-        <span class="mini-kicker">Unified brand room</span>
-      </article>
-    </section>
+  <div class="brand" id="brand">
+    <p class="kicker">Private list</p>
+    <div class="logo">IYI<em>É</em></div>
+    <p class="tagline">For the girl who moves first.</p>
   </div>
 
-  <script>
-    const form = document.getElementById('signup-form');
-    const formState = document.getElementById('form-state');
-    const successSection = document.getElementById('success-section');
-    const sentMsg = document.getElementById('sent-msg');
-    const submitBtn = document.getElementById('submit-btn');
-    const errorMsg = document.getElementById('error-msg');
+  <div id="form-state">
+    <div class="form-wrap">
+      <form id="signup-form">
+        <div class="field">
+          <input type="text" id="firstName" placeholder="Your name" autocomplete="given-name"/>
+        </div>
+        <div class="field">
+          <input type="email" id="email" placeholder="Email address" required autocomplete="email"/>
+        </div>
+        <button type="submit" class="btn" id="submit-btn">Join the circle</button>
+      </form>
+      <p class="error-msg" id="error-msg"></p>
+      <p class="form-note">No spam. Unsubscribe anytime.</p>
+    </div>
+  </div>
 
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
+  <div class="success" id="success-section">
+    <span class="success-mark">You're in</span>
+    <h2>Welcome to <em>IYIÉ.</em></h2>
+    <p id="success-msg">You'll hear from us when it matters. Expect something soon.</p>
+  </div>
 
-      const email = document.getElementById('email').value.trim();
-      const firstName = document.getElementById('firstName').value.trim();
+</div>
 
-      if (!email || !email.includes('@')) {
-        errorMsg.textContent = 'Please enter a valid email address.';
+<p class="foot">IYIÉ Style — SS 2025</p>
+
+<script>
+  const form        = document.getElementById('signup-form');
+  const formState   = document.getElementById('form-state');
+  const successSec  = document.getElementById('success-section');
+  const submitBtn   = document.getElementById('submit-btn');
+  const errorMsg    = document.getElementById('error-msg');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const email     = document.getElementById('email').value.trim();
+    const firstName = document.getElementById('firstName').value.trim();
+
+    if (!email || !email.includes('@')) {
+      errorMsg.textContent = 'Please enter a valid email address.';
+      errorMsg.style.display = 'block';
+      return;
+    }
+
+    submitBtn.classList.add('loading');
+    errorMsg.style.display = 'none';
+
+    try {
+      const res  = await fetch('/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, firstName })
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        errorMsg.textContent = data.error || 'Something went wrong. Try again.';
         errorMsg.style.display = 'block';
+        submitBtn.classList.remove('loading');
         return;
       }
 
-      submitBtn.classList.add('loading');
-      errorMsg.style.display = 'none';
-
-      try {
-        const res = await fetch('/subscribe', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, firstName })
-        });
-        const data = await res.json();
-
-        if (!res.ok) {
-          errorMsg.textContent = data.error || 'Something went wrong. Try again.';
-          errorMsg.style.display = 'block';
-          submitBtn.classList.remove('loading');
-          return;
-        }
-
-        playChime();
-        formState.style.display = 'none';
-        successSection.style.display = 'flex';
-        if (firstName) {
-          document.getElementById('success-msg').innerHTML = `${firstName}, you’re on the list. Expect first word when the next release is ready.`;
-        }
-        sentMsg.classList.add('visible');
-        submitBtn.classList.remove('loading');
-      } catch {
-        errorMsg.textContent = 'Connection error. Try again.';
-        errorMsg.style.display = 'block';
-        submitBtn.classList.remove('loading');
+      playChime();
+      formState.style.display = 'none';
+      if (firstName) {
+        document.getElementById('success-msg').textContent =
+          `${firstName}, you'll hear from us when it matters. Expect something soon.`;
       }
-    });
+      successSec.style.display = 'flex';
 
-    function playChime() {
-      try {
-        const ctx = new (window.AudioContext || window.webkitAudioContext)();
-        const notes = [659.25, 880, 1108.73];
-        notes.forEach((freq, i) => {
-          const osc = ctx.createOscillator();
-          const gain = ctx.createGain();
-          osc.connect(gain);
-          gain.connect(ctx.destination);
-          osc.type = 'sine';
-          osc.frequency.value = freq;
-          const start = ctx.currentTime + i * 0.08;
-          gain.gain.setValueAtTime(0, start);
-          gain.gain.linearRampToValueAtTime(0.16, start + 0.02);
-          gain.gain.exponentialRampToValueAtTime(0.0001, start + 1.8);
-          osc.start(start);
-          osc.stop(start + 1.8);
-        });
-      } catch {}
+    } catch {
+      errorMsg.textContent = 'Connection error. Try again.';
+      errorMsg.style.display = 'block';
+      submitBtn.classList.remove('loading');
     }
-  </script>
+  });
+
+  function playChime() {
+    try {
+      const ctx   = new (window.AudioContext || window.webkitAudioContext)();
+      const notes = [659.25, 880, 1108.73];
+      notes.forEach((freq, i) => {
+        const osc  = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.type = 'sine';
+        osc.frequency.value = freq;
+        const t = ctx.currentTime + i * 0.08;
+        gain.gain.setValueAtTime(0, t);
+        gain.gain.linearRampToValueAtTime(0.16, t + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.0001, t + 1.8);
+        osc.start(t);
+        osc.stop(t + 1.8);
+      });
+    } catch {}
+  }
+</script>
 </body>
 </html>
