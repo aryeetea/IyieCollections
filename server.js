@@ -120,7 +120,7 @@ app.post('/admin/login', (req, res) => {
 app.get('/admin/subscribers', requireAuth, async (req, res) => {
   try {
     const { data: contacts } = await resend.contacts.list({ audienceId: AUDIENCE_ID });
-    const subs = (contacts || [])
+    const subs = (contacts?.data || [])
       .filter(c => !c.unsubscribed)
       .map(c => ({
         id: c.id,
@@ -156,7 +156,7 @@ app.post('/admin/blast', requireAuth, async (req, res) => {
   let subs;
   try {
     const { data: contacts } = await resend.contacts.list({ audienceId: AUDIENCE_ID });
-    subs = (contacts || []).filter(c => !c.unsubscribed);
+    subs = (contacts?.data || []).filter(c => !c.unsubscribed);
   } catch (err) {
     return res.status(500).json({ error: 'Failed to load subscribers.' });
   }
