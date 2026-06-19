@@ -3,34 +3,34 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>IYIÉ Style</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Manrope:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <title>IYIÉ Style — You're Invited</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:    #0c0a0b;
-      --cream: #f4e9dd;
-      --muted: rgba(244, 233, 221, 0.42);
-      --red:   #a61d33;
-      --pink:  #d49aa4;
-      --line:  rgba(244, 233, 221, 0.1);
+      --bg:        #0c0a0b;
+      --dark:      #0c0a0b;
+      --cream:     #f4e9dd;
+      --red:       #9B1B30;
+      --red-deep:  #6d1221;
+      --pink:      #d49aa4;
+      --muted:     rgba(244,233,221,0.42);
+      --border:    rgba(244,233,221,0.1);
+      --env:       #1e1618;
+      --env-flap:  #171214;
+      --env-fold:  #251a1d;
+      --env-front: #1a1315;
     }
 
     html, body {
       height: 100%;
-      background: var(--bg);
-      color: var(--cream);
+      background:
+        radial-gradient(ellipse at 60% 0%, rgba(155,27,48,0.2) 0%, transparent 55%),
+        var(--bg);
       font-family: 'Manrope', sans-serif;
+      color: var(--cream);
       overflow-x: hidden;
-    }
-
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background: radial-gradient(ellipse at 60% 0%, rgba(166, 29, 51, 0.18) 0%, transparent 60%);
-      pointer-events: none;
     }
 
     .page {
@@ -39,27 +39,29 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 3rem 2rem;
-      gap: 3rem;
+      padding: 3rem 2rem 4rem;
     }
 
     /* ── Brand ── */
-    .brand { text-align: center; }
+    .brand {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
 
     .kicker {
       font-size: 0.68rem;
       letter-spacing: 0.38em;
       text-transform: uppercase;
       color: var(--muted);
-      margin-bottom: 1rem;
+      margin-bottom: 0.6rem;
     }
 
     .logo {
       font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(5rem, 16vw, 11rem);
+      font-size: clamp(72px, 13vw, 130px);
       font-weight: 300;
       line-height: 1;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.05em;
       color: var(--cream);
     }
 
@@ -68,65 +70,98 @@
     .tagline {
       font-family: 'Cormorant Garamond', serif;
       font-style: italic;
-      font-size: clamp(1rem, 2.5vw, 1.3rem);
+      font-size: 1rem;
       color: var(--muted);
-      margin-top: 1.2rem;
-      letter-spacing: 0.04em;
+      margin-top: 0.5rem;
+      letter-spacing: 0.03em;
     }
 
-    /* ── Form ── */
-    .form-wrap {
-      width: min(380px, 100%);
-      display: flex;
-      flex-direction: column;
-      gap: 0;
+    /* ── Envelope wrapper ── */
+    .env-wrapper {
+      position: relative;
+      width: min(480px, 92vw);
+      overflow: hidden;
     }
 
-    .field { position: relative; }
-
-    .field input {
-      width: 100%;
-      background: transparent;
-      border: 1px solid var(--line);
-      border-bottom: none;
-      color: var(--cream);
-      padding: 1rem 1.2rem;
-      font-family: 'Manrope', sans-serif;
-      font-size: 0.9rem;
-      outline: none;
-      transition: background 0.2s, border-color 0.2s;
+    /* ── Invitation card (paper) ── */
+    .paper {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: min(428px, 86vw);
+      height: 400px;
+      background: #1a1315;
+      border: 1px solid rgba(244,233,221,0.08);
+      z-index: 1;
+      will-change: transform;
+      transform: translateX(-50%) translateY(400px);
+      visibility: hidden;
+      transition: transform 0.82s cubic-bezier(0.35, 0, 0.15, 1);
+      padding: 28px 28px 0;
     }
 
-    .field:last-of-type input {
-      border-bottom: 1px solid var(--line);
+    .paper.out {
+      transform: translateX(-50%) translateY(-130px);
+      box-shadow: 0 -8px 48px rgba(12,12,12,0.1), 0 2px 8px rgba(12,12,12,0.04);
     }
 
-    .field input:focus {
-      background: rgba(244, 233, 221, 0.04);
-      border-color: rgba(212, 154, 164, 0.5);
-    }
-
-    .field input::placeholder { color: var(--muted); }
-
-    .btn {
-      width: 100%;
+    .card-rule {
+      width: 24px;
+      height: 1px;
       background: var(--red);
-      color: var(--cream);
-      border: none;
-      padding: 1.1rem;
-      font-family: 'Manrope', sans-serif;
+      margin: 0 auto 1rem;
+    }
+
+    .card-heading {
+      font-family: 'Cormorant Garamond', serif;
       font-size: 0.72rem;
       letter-spacing: 0.32em;
       text-transform: uppercase;
-      font-weight: 500;
+      color: var(--muted);
+      text-align: center;
+      margin-bottom: 1.1rem;
+    }
+
+    /* ── Form ── */
+    #signup-form {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .field input {
+      width: 100%;
+      background: rgba(244,233,221,0.04);
+      border: 1px solid var(--border);
+      color: var(--cream);
+      padding: 11px 16px;
+      font-size: 0.88rem;
+      font-family: 'Manrope', sans-serif;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .field input:focus { border-color: var(--red); }
+    .field input::placeholder { color: rgba(12,12,12,0.22); }
+
+    .btn {
+      width: 100%;
+      background: var(--dark);
+      color: var(--bg);
+      border: none;
+      padding: 13px;
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      font-family: 'Manrope', sans-serif;
+      font-weight: 600;
       cursor: pointer;
-      margin-top: 0.75rem;
-      transition: filter 0.2s;
+      margin-top: 4px;
+      transition: background 0.2s;
       position: relative;
     }
 
-    .btn:hover { filter: brightness(1.1); }
-    .btn:active { filter: brightness(0.95); }
+    .btn:hover { background: var(--red); }
     .btn.loading { color: transparent; pointer-events: none; }
     .btn.loading::after {
       content: '';
@@ -134,80 +169,225 @@
       top: 50%; left: 50%;
       width: 14px; height: 14px;
       margin: -7px 0 0 -7px;
-      border: 1.5px solid rgba(244, 233, 221, 0.3);
-      border-top-color: var(--cream);
+      border: 1.5px solid rgba(245,240,232,0.3);
+      border-top-color: var(--bg);
       border-radius: 50%;
       animation: spin 0.8s linear infinite;
     }
 
+    .error-msg {
+      font-size: 0.78rem;
+      color: var(--red);
+      display: none;
+      text-align: center;
+      margin-top: 6px;
+    }
+
     .form-note {
-      font-size: 0.72rem;
+      font-size: 0.68rem;
+      letter-spacing: 0.05em;
       color: var(--muted);
       text-align: center;
-      margin-top: 1rem;
-      letter-spacing: 0.04em;
+      margin-top: 0.9rem;
     }
 
-    .error-msg {
-      display: none;
-      font-size: 0.82rem;
-      color: var(--pink);
-      text-align: center;
-      margin-top: 0.75rem;
-    }
-
-    /* ── Success ── */
+    /* ── Success state ── */
     .success {
       display: none;
       flex-direction: column;
       align-items: center;
       text-align: center;
-      gap: 0.75rem;
-      animation: rise 0.7s ease both;
+      gap: 0.5rem;
     }
 
     .success-mark {
-      font-size: 0.68rem;
+      font-size: 0.65rem;
       letter-spacing: 0.32em;
       text-transform: uppercase;
       color: var(--red);
+      font-weight: 600;
     }
 
     .success h2 {
       font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(2rem, 6vw, 3rem);
+      font-size: 1.9rem;
       font-weight: 300;
-      line-height: 1.1;
+      line-height: 1.15;
       color: var(--cream);
     }
 
     .success h2 em { color: var(--red); font-style: italic; }
 
     .success p {
-      font-size: 0.9rem;
+      font-size: 0.82rem;
       color: var(--muted);
       line-height: 1.8;
-      max-width: 22rem;
+    }
+
+    /* ── Envelope ── */
+    .env {
+      position: relative;
+      width: 100%;
+      height: 168px;
+      z-index: 2;
+      perspective: 700px;
+      perspective-origin: center top;
+      cursor: pointer;
+    }
+
+    .env-back {
+      position: absolute;
+      inset: 0;
+      background: var(--env);
+    }
+
+    .fold { position: absolute; inset: 0; }
+    .fold-l { background: var(--env-fold); clip-path: polygon(0 0, 50% 50%, 0 100%); }
+    .fold-r { background: var(--env-fold); clip-path: polygon(100% 0, 50% 50%, 100% 100%); }
+    .fold-b { background: #080808; clip-path: polygon(0 100%, 50% 44%, 100% 100%); }
+
+    .env-front {
+      position: absolute;
+      inset: 0;
+      background: var(--env-front);
+      z-index: 1;
+    }
+
+    /* Wax seal */
+    .env-seal {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      background: var(--red);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 9px;
+      letter-spacing: 1px;
+      color: rgba(245,240,232,0.9);
+      box-shadow: 0 2px 16px rgba(155,27,48,0.5);
+      pointer-events: none;
+    }
+
+    /* Flap */
+    .env-flap {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 84px;
+      background: var(--env-flap);
+      clip-path: polygon(0 0, 100% 0, 50% 100%);
+      transform-origin: center top;
+      transform: rotateX(0deg);
+      backface-visibility: hidden;
+      transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 2;
+    }
+
+    .env-flap.open { transform: rotateX(-175deg); }
+
+    /* Ship away */
+    @keyframes env-fly {
+      0%   { translate: 0 0;         scale: 1;    rotate: 0deg;  opacity: 1; }
+      100% { translate: 110vw -60vh; scale: 0.1;  rotate: 20deg; opacity: 0; }
+    }
+    .env.flying { animation: env-fly 0.9s cubic-bezier(0.5, 0, 0.8, 0) forwards; }
+
+    /* Mask below envelope */
+    .env-wrapper::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: -20px; right: -20px;
+      height: 80px;
+      background: #0c0a0b;
+      z-index: 5;
+      pointer-events: none;
+    }
+
+    /* ── Tap hint ── */
+    .tap-hint {
+      margin-top: 1.6rem;
+      font-size: 0.68rem;
+      letter-spacing: 0.3em;
+      color: var(--muted);
+      text-transform: uppercase;
+      cursor: pointer;
+      -webkit-user-select: none;
+      user-select: none;
+      transition: color 0.2s;
+    }
+
+    .tap-hint:hover { color: var(--red); }
+    .tap-hint.hidden { opacity: 0; pointer-events: none; }
+
+    /* ── Final message ── */
+    .sent-msg {
+      text-align: center;
+      margin-top: 1.8rem;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .sent-msg.visible { opacity: 1; transform: translateY(0); }
+
+    .sent-msg p {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1.1rem;
+      color: var(--muted);
     }
 
     /* ── Footer ── */
     .foot {
       position: fixed;
-      bottom: 2rem;
-      font-size: 0.65rem;
-      letter-spacing: 0.28em;
+      bottom: 1.5rem;
+      font-size: 0.62rem;
+      letter-spacing: 0.3em;
       text-transform: uppercase;
-      color: rgba(244, 233, 221, 0.18);
+      color: rgba(12,12,12,0.18);
+    }
+
+    /* ── 3D bottom watermark ── */
+    .watermark {
+      position: fixed;
+      bottom: -1rem;
+      left: 50%;
+      transform: translateX(-50%);
+      perspective: 1400px;
+      pointer-events: none;
+      z-index: 0;
+      white-space: nowrap;
+    }
+
+    .watermark-text {
+      display: block;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3.2rem, 7vw, 6.5rem);
+      font-weight: 300;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(155, 27, 48, 0.28);
+      animation: spin3d 16s linear infinite;
+    }
+
+    @keyframes spin3d {
+      from { transform: rotateY(0deg) rotateX(10deg); }
+      to   { transform: rotateY(360deg) rotateX(10deg); }
     }
 
     @keyframes spin { to { transform: rotate(360deg); } }
-    @keyframes rise {
-      from { opacity: 0; transform: translateY(12px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
 
     @media (max-width: 480px) {
-      .page { gap: 2.5rem; }
+      .logo { font-size: 72px; }
+      .paper { height: 380px; padding: 22px 20px 0; }
+      .env { height: 152px; }
+      .env-flap { height: 76px; }
     }
   </style>
 </head>
@@ -215,59 +395,107 @@
 
 <div class="page">
 
-  <div class="brand" id="brand">
-    <p class="kicker">Private list</p>
+  <header class="brand">
+    <p class="kicker">An invitation, sealed with intention</p>
     <div class="logo">IYI<em>É</em></div>
-    <p class="tagline">For the girl who moves first.</p>
-  </div>
+    <p class="tagline">You can't buy taste. But you can be first.</p>
+  </header>
 
-  <div id="form-state">
-    <div class="form-wrap">
-      <form id="signup-form">
-        <div class="field">
-          <input type="text" id="firstName" placeholder="Your name" autocomplete="given-name"/>
-        </div>
-        <div class="field">
-          <input type="email" id="email" placeholder="Email address" required autocomplete="email"/>
-        </div>
-        <button type="submit" class="btn" id="submit-btn">Join the circle</button>
-      </form>
-      <p class="error-msg" id="error-msg"></p>
-      <p class="form-note">No spam. Unsubscribe anytime.</p>
+  <div class="env-wrapper" id="env-wrapper">
+
+    <div class="paper" id="paper">
+      <div class="card-rule"></div>
+      <p class="card-heading">You have been cordially selected</p>
+
+      <div id="form-state">
+        <form id="signup-form">
+          <div class="field">
+            <input type="text" id="firstName" placeholder="Your name" autocomplete="given-name"/>
+          </div>
+          <div class="field">
+            <input type="email" id="email" placeholder="Email address" required autocomplete="email"/>
+          </div>
+          <button type="submit" class="btn" id="submit-btn">RSVP — I'm in</button>
+          <p class="error-msg" id="error-msg"></p>
+        </form>
+        <p class="form-note">No junk mail. Unsubscribe anytime, no hard feelings.</p>
+      </div>
+
+      <div class="success" id="success-section">
+        <span class="success-mark">RSVP accepted</span>
+        <h2>Your name is on<br>the <em>list.</em></h2>
+        <p id="success-msg">Expect a very stylish email soon.</p>
+      </div>
     </div>
+
+    <div class="env" id="envelope" onclick="openEnvelope()">
+      <div class="env-back">
+        <div class="fold fold-l"></div>
+        <div class="fold fold-r"></div>
+        <div class="fold fold-b"></div>
+      </div>
+      <div class="env-front">
+        <div class="env-seal">IYIÉ</div>
+      </div>
+      <div class="env-flap" id="flap"></div>
+    </div>
+
   </div>
 
-  <div class="success" id="success-section">
-    <span class="success-mark">You're in</span>
-    <h2>Welcome to <em>IYIÉ.</em></h2>
-    <p id="success-msg">You'll hear from us when it matters. Expect something soon.</p>
+  <p class="tap-hint" id="tap-hint" onclick="openEnvelope()">Open your invite</p>
+
+  <div class="sent-msg" id="sent-msg">
+    <p>Sealed, stamped, and on its way to you.</p>
   </div>
 
 </div>
 
-<p class="foot">IYIÉ Style — SS 2025</p>
+<div class="watermark" aria-hidden="true">
+  <span class="watermark-text">To Do It Well</span>
+</div>
 
 <script>
-  const form        = document.getElementById('signup-form');
-  const formState   = document.getElementById('form-state');
-  const successSec  = document.getElementById('success-section');
-  const submitBtn   = document.getElementById('submit-btn');
-  const errorMsg    = document.getElementById('error-msg');
+  let state = 'closed';
 
-  form.addEventListener('submit', async (e) => {
+  const paper   = document.getElementById('paper');
+  const flap    = document.getElementById('flap');
+  const env     = document.getElementById('envelope');
+  const wrapper = document.getElementById('env-wrapper');
+  const tapHint = document.getElementById('tap-hint');
+  const sentMsg = document.getElementById('sent-msg');
+
+  function openEnvelope() {
+    if (state !== 'closed') return;
+    state = 'opening';
+    tapHint.classList.add('hidden');
+    flap.classList.add('open');
+
+    setTimeout(() => {
+      wrapper.style.overflow = 'visible';
+      paper.style.visibility = 'visible';
+      paper.classList.add('out');
+    }, 300);
+
+    setTimeout(() => { state = 'open'; }, 1100);
+  }
+
+  document.getElementById('signup-form').addEventListener('submit', async (e) => {
     e.preventDefault();
+    if (state !== 'open') return;
 
     const email     = document.getElementById('email').value.trim();
     const firstName = document.getElementById('firstName').value.trim();
+    const btn       = document.getElementById('submit-btn');
+    const errEl     = document.getElementById('error-msg');
 
     if (!email || !email.includes('@')) {
-      errorMsg.textContent = 'Please enter a valid email address.';
-      errorMsg.style.display = 'block';
+      errEl.textContent = 'A valid email address, please.';
+      errEl.style.display = 'block';
       return;
     }
 
-    submitBtn.classList.add('loading');
-    errorMsg.style.display = 'none';
+    btn.classList.add('loading');
+    errEl.style.display = 'none';
 
     try {
       const res  = await fetch('/subscribe', {
@@ -278,24 +506,37 @@
       const data = await res.json();
 
       if (!res.ok) {
-        errorMsg.textContent = data.error || 'Something went wrong. Try again.';
-        errorMsg.style.display = 'block';
-        submitBtn.classList.remove('loading');
+        errEl.textContent = data.error || 'Something went wrong. Try again.';
+        errEl.style.display = 'block';
+        btn.classList.remove('loading');
         return;
       }
 
+      state = 'closing';
       playChime();
-      formState.style.display = 'none';
+
+      document.getElementById('form-state').style.display = 'none';
       if (firstName) {
         document.getElementById('success-msg').textContent =
-          `${firstName}, you'll hear from us when it matters. Expect something soon.`;
+          `${firstName}, expect a very stylish email soon.`;
       }
-      successSec.style.display = 'flex';
+      document.getElementById('success-section').style.display = 'flex';
+
+      // Slide paper back in
+      setTimeout(() => paper.classList.remove('out'), 1800);
+      setTimeout(() => { paper.style.visibility = 'hidden'; }, 2600);
+      setTimeout(() => flap.classList.remove('open'), 2200);
+
+      // Fly away
+      setTimeout(() => env.classList.add('flying'), 3000);
+
+      // Final message
+      setTimeout(() => sentMsg.classList.add('visible'), 3700);
 
     } catch {
-      errorMsg.textContent = 'Connection error. Try again.';
-      errorMsg.style.display = 'block';
-      submitBtn.classList.remove('loading');
+      document.getElementById('error-msg').textContent = 'Connection error. Try again.';
+      document.getElementById('error-msg').style.display = 'block';
+      btn.classList.remove('loading');
     }
   });
 
