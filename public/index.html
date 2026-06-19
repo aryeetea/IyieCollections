@@ -9,19 +9,23 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:    #8B1525;
-      --cream: #f4e9dd;
-      --pink:  #f0b4bc;
-      --dark:  #2a080f;
-      --red:   #6d0f1c;
-      --muted: rgba(240,180,188,0.55);
+      --bg:       #F0E6D2;
+      --cream:    #F7F1E7;
+      --envelope: #E8DCCB;
+      --fold:     #D9CCBA;
+      --fold-b:   #CFC2AF;
+      --red:      #9B1B30;
+      --red-deep: #6d1221;
+      --pink:     #C97480;
+      --dark:     #251010;
+      --muted:    rgba(37,16,16,0.42);
     }
 
     html, body {
       min-height: 100%;
       background: var(--bg);
       font-family: 'Manrope', sans-serif;
-      color: var(--pink);
+      color: var(--dark);
       overflow-x: hidden;
     }
 
@@ -32,7 +36,7 @@
       align-items: center;
       justify-content: center;
       padding: 3rem 1.5rem 9rem;
-      gap: 2rem;
+      gap: 2.2rem;
       position: relative;
     }
 
@@ -43,7 +47,7 @@
       font-size: 0.65rem;
       letter-spacing: 0.38em;
       text-transform: uppercase;
-      color: var(--muted);
+      color: var(--pink);
       margin-bottom: 0.6rem;
     }
 
@@ -53,51 +57,70 @@
       font-weight: 300;
       line-height: 1;
       letter-spacing: 0.06em;
-      color: var(--cream);
+      color: var(--dark);
     }
 
-    .logo em { color: var(--pink); font-style: italic; }
+    .logo em { color: var(--red); font-style: italic; }
 
     .tagline {
       font-family: 'Cormorant Garamond', serif;
       font-style: italic;
-      font-size: clamp(0.95rem, 2vw, 1.1rem);
-      color: var(--muted);
+      font-size: clamp(0.9rem, 2vw, 1.1rem);
+      color: var(--pink);
       margin-top: 0.5rem;
     }
 
-    /* ── Envelope wrapper ── */
-    .env-wrapper {
+    /* ── Scene: card sticking out of envelope ── */
+    .env-scene {
       position: relative;
-      width: min(460px, 100%);
+      width: min(480px, 92vw);
     }
 
     /* ── Invitation card ── */
     .card {
       position: relative;
       background: var(--cream);
-      padding: 2rem 2rem 1.6rem;
-      color: var(--dark);
-      z-index: 2;
-      box-shadow: 0 8px 48px rgba(0,0,0,0.3);
-      animation: rise 0.7s ease both;
+      border: 1px solid rgba(155,27,48,0.12);
+      padding: 1.8rem 1.8rem 1.4rem;
+      margin-bottom: -18px; /* tucks bottom edge into envelope */
+      z-index: 3;
+      box-shadow: 0 -4px 32px rgba(37,16,16,0.08), 0 2px 8px rgba(37,16,16,0.05);
     }
 
-    .card-rule {
-      width: 28px;
-      height: 2px;
-      background: var(--bg);
-      margin: 0 auto 1rem;
+    /* Red top edge accent */
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--red), var(--pink));
     }
+
+    .card-inner {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .card-header { text-align: center; }
 
     .card-heading {
       font-size: 0.65rem;
       letter-spacing: 0.32em;
       text-transform: uppercase;
-      color: rgba(42,8,15,0.45);
-      text-align: center;
-      margin-bottom: 1.2rem;
+      color: var(--pink);
+      margin-bottom: 0.3rem;
     }
+
+    .card-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.4rem, 4vw, 1.75rem);
+      font-weight: 300;
+      line-height: 1.2;
+      color: var(--dark);
+    }
+
+    .card-title em { color: var(--red); font-style: italic; }
 
     /* ── Form ── */
     #signup-form {
@@ -108,8 +131,9 @@
 
     .field input {
       width: 100%;
-      background: rgba(139,21,37,0.06);
-      border: 1px solid rgba(42,8,15,0.12);
+      background: rgba(240,230,210,0.5);
+      border: 1px solid rgba(37,16,16,0.1);
+      border-bottom: 1px solid rgba(155,27,48,0.25);
       color: var(--dark);
       padding: 0.85rem 1rem;
       font-family: 'Manrope', sans-serif;
@@ -119,16 +143,16 @@
     }
 
     .field input:focus {
-      border-color: var(--bg);
-      background: rgba(139,21,37,0.04);
+      border-color: var(--red);
+      background: rgba(240,230,210,0.3);
     }
 
-    .field input::placeholder { color: rgba(42,8,15,0.3); }
+    .field input::placeholder { color: rgba(37,16,16,0.28); }
 
     .btn {
       width: 100%;
-      background: var(--bg);
-      color: var(--cream);
+      background: var(--red);
+      color: #F7F1E7;
       border: none;
       padding: 1rem;
       font-family: 'Manrope', sans-serif;
@@ -137,12 +161,12 @@
       text-transform: uppercase;
       font-weight: 600;
       cursor: pointer;
-      margin-top: 0.35rem;
+      margin-top: 0.2rem;
       transition: background 0.2s;
       position: relative;
     }
 
-    .btn:hover { background: var(--red); }
+    .btn:hover { background: var(--red-deep); }
     .btn.loading { color: transparent; pointer-events: none; }
     .btn.loading::after {
       content: '';
@@ -150,8 +174,8 @@
       top: 50%; left: 50%;
       width: 14px; height: 14px;
       margin: -7px 0 0 -7px;
-      border: 1.5px solid rgba(244,233,221,0.3);
-      border-top-color: var(--cream);
+      border: 1.5px solid rgba(247,241,231,0.3);
+      border-top-color: #F7F1E7;
       border-radius: 50%;
       animation: spin 0.8s linear infinite;
     }
@@ -161,101 +185,88 @@
       font-size: 0.78rem;
       color: var(--red);
       text-align: center;
-      margin-top: 0.4rem;
+      margin-top: 0.3rem;
     }
 
     .form-note {
-      font-size: 0.65rem;
+      font-size: 0.64rem;
       letter-spacing: 0.05em;
-      color: rgba(42,8,15,0.42);
+      color: var(--muted);
       text-align: center;
-      margin-top: 1rem;
-      padding-top: 0.9rem;
-      border-top: 1px solid rgba(42,8,15,0.08);
+      padding-top: 0.85rem;
+      border-top: 1px solid rgba(155,27,48,0.1);
     }
 
-    /* ── Success state ── */
+    /* ── Success ── */
     .success {
       display: none;
       flex-direction: column;
       align-items: center;
       text-align: center;
       gap: 0.5rem;
-      padding: 0.5rem 0;
       animation: rise 0.6s ease both;
     }
 
     .success-mark {
-      font-size: 0.65rem;
+      font-size: 0.64rem;
       letter-spacing: 0.32em;
       text-transform: uppercase;
-      color: var(--bg);
+      color: var(--red);
       font-weight: 600;
     }
 
     .success h2 {
       font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(1.8rem, 5vw, 2.4rem);
+      font-size: clamp(1.6rem, 5vw, 2.2rem);
       font-weight: 300;
-      line-height: 1.1;
+      line-height: 1.15;
       color: var(--dark);
     }
 
-    .success h2 em { color: var(--bg); font-style: italic; }
+    .success h2 em { color: var(--red); font-style: italic; }
 
     .success p {
-      font-size: 0.85rem;
-      color: rgba(42,8,15,0.55);
+      font-size: 0.84rem;
+      color: var(--muted);
       line-height: 1.8;
     }
 
-    /* ── Open envelope base (cream) ── */
-    .env {
+    /* ── Envelope body ── */
+    .envelope {
       position: relative;
       width: 100%;
-      height: 140px;
-      z-index: 1;
+      height: 152px;
+      z-index: 2;
+      perspective: 700px;
+      perspective-origin: center top;
     }
 
     .env-back {
       position: absolute;
       inset: 0;
-      background: #ede0d0;
+      background: var(--envelope);
     }
 
     .fold { position: absolute; inset: 0; }
-    .fold-l { background: #e5d8c8; clip-path: polygon(0 0, 50% 50%, 0 100%); }
-    .fold-r { background: #e5d8c8; clip-path: polygon(100% 0, 50% 50%, 100% 100%); }
-    .fold-b { background: #ddd0be; clip-path: polygon(0 100%, 50% 44%, 100% 100%); }
+    .fold-l { background: var(--fold);   clip-path: polygon(0 0, 50% 50%, 0 100%); }
+    .fold-r { background: var(--fold);   clip-path: polygon(100% 0, 50% 50%, 100% 100%); }
+    .fold-b { background: var(--fold-b); clip-path: polygon(0 100%, 50% 44%, 100% 100%); }
 
     .env-front {
       position: absolute;
       inset: 0;
-      background: #ede0d0;
+      background: var(--envelope);
       z-index: 1;
     }
 
-    /* Flap — already open (folded back) */
-    .env-flap {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 70px;
-      background: #e8dbc9;
-      clip-path: polygon(0 0, 100% 0, 50% 100%);
-      transform-origin: center top;
-      transform: rotateX(-175deg);
-      backface-visibility: hidden;
-      z-index: 2;
-    }
-
-    /* Wax seal on envelope */
+    /* Wax seal */
     .env-seal {
       position: absolute;
       top: 50%; left: 50%;
       transform: translate(-50%, -50%);
-      width: 42px; height: 42px;
+      width: 44px; height: 44px;
       border-radius: 50%;
-      background: var(--bg);
+      background: var(--red);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -263,18 +274,31 @@
       font-style: italic;
       font-size: 8px;
       letter-spacing: 1px;
-      color: var(--cream);
-      box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+      color: #F7F1E7;
+      box-shadow: 0 2px 12px rgba(155,27,48,0.4);
       pointer-events: none;
       z-index: 3;
     }
 
-    /* Fly away on success */
-    @keyframes fly {
-      0%   { transform: translate(0,0)      scale(1)    rotate(0deg);  opacity: 1; }
-      100% { transform: translate(110vw,-60vh) scale(0.1) rotate(20deg); opacity: 0; }
+    /* Flap — already open */
+    .env-flap {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 76px;
+      background: var(--fold);
+      clip-path: polygon(0 0, 100% 0, 50% 100%);
+      transform-origin: center top;
+      transform: rotateX(-175deg);
+      backface-visibility: hidden;
+      z-index: 2;
     }
-    .env-wrapper.flying { animation: fly 0.9s cubic-bezier(0.5,0,0.8,0) forwards; }
+
+    /* Success: whole scene flies away */
+    @keyframes fly {
+      0%   { transform: translate(0, 0)        scale(1)    rotate(0deg);  opacity: 1; }
+      100% { transform: translate(110vw, -60vh) scale(0.08) rotate(18deg); opacity: 0; }
+    }
+    .env-scene.flying { animation: fly 1s cubic-bezier(0.5, 0, 0.8, 0) forwards; }
 
     /* ── Sent message ── */
     .sent-msg {
@@ -283,14 +307,12 @@
       transform: translateY(8px);
       transition: opacity 0.7s ease, transform 0.7s ease;
     }
-
     .sent-msg.visible { opacity: 1; transform: translateY(0); }
-
     .sent-msg p {
       font-family: 'Cormorant Garamond', serif;
       font-style: italic;
       font-size: 1.1rem;
-      color: var(--muted);
+      color: var(--pink);
     }
 
     /* ── 3D watermark ── */
@@ -313,12 +335,12 @@
       letter-spacing: 0.3em;
       text-transform: uppercase;
       color: transparent;
-      -webkit-text-stroke: 1px rgba(240,180,188,0.22);
+      -webkit-text-stroke: 1px rgba(155,27,48,0.2);
       animation: spin3d 16s linear infinite;
     }
 
     @keyframes spin3d {
-      from { transform: rotateY(0deg) rotateX(10deg); }
+      from { transform: rotateY(0deg)   rotateX(10deg); }
       to   { transform: rotateY(360deg) rotateX(10deg); }
     }
 
@@ -330,9 +352,9 @@
     }
 
     @media (max-width: 480px) {
-      .card { padding: 1.6rem 1.2rem 1.4rem; }
-      .env { height: 120px; }
-      .env-flap { height: 60px; }
+      .card { padding: 1.4rem 1.2rem 1.2rem; }
+      .envelope { height: 134px; }
+      .env-flap { height: 67px; }
     }
   </style>
 </head>
@@ -346,36 +368,42 @@
     <p class="tagline">You can't buy taste. But you can be first.</p>
   </header>
 
-  <div class="env-wrapper" id="env-wrapper">
+  <div class="env-scene" id="env-scene">
 
-    <!-- Card already out of envelope -->
-    <div class="card" id="card">
-      <div class="card-rule"></div>
-      <p class="card-heading">You have been cordially selected</p>
+    <!-- Invitation card sticking up out of envelope -->
+    <div class="card">
+      <div class="card-inner">
 
-      <div id="form-state">
-        <form id="signup-form">
-          <div class="field">
-            <input type="text" id="firstName" placeholder="Your name" autocomplete="given-name"/>
-          </div>
-          <div class="field">
-            <input type="email" id="email" placeholder="Email address" required autocomplete="email"/>
-          </div>
-          <button type="submit" class="btn" id="submit-btn">RSVP — I'm in</button>
-          <p class="error-msg" id="error-msg"></p>
-        </form>
-        <p class="form-note">No junk mail. Unsubscribe anytime, no hard feelings.</p>
-      </div>
+        <div class="card-header">
+          <p class="card-heading">You have been cordially selected</p>
+          <h2 class="card-title">Join the circle.<br><em>RSVP below.</em></h2>
+        </div>
 
-      <div class="success" id="success-section">
-        <span class="success-mark">RSVP accepted</span>
-        <h2>Your name is on<br>the <em>list.</em></h2>
-        <p id="success-msg">Expect a very stylish email soon.</p>
+        <div id="form-state">
+          <form id="signup-form">
+            <div class="field">
+              <input type="text" id="firstName" placeholder="Your name" autocomplete="given-name"/>
+            </div>
+            <div class="field">
+              <input type="email" id="email" placeholder="Email address" required autocomplete="email"/>
+            </div>
+            <button type="submit" class="btn" id="submit-btn">RSVP — I'm in</button>
+            <p class="error-msg" id="error-msg"></p>
+          </form>
+          <p class="form-note">No junk mail. Unsubscribe anytime, no hard feelings.</p>
+        </div>
+
+        <div class="success" id="success-section">
+          <span class="success-mark">RSVP accepted</span>
+          <h2>Your name is on<br>the <em>list.</em></h2>
+          <p id="success-msg">Expect a very stylish email soon.</p>
+        </div>
+
       </div>
     </div>
 
-    <!-- Open envelope below the card -->
-    <div class="env" id="envelope">
+    <!-- Open envelope sitting below the card -->
+    <div class="envelope">
       <div class="env-back">
         <div class="fold fold-l"></div>
         <div class="fold fold-r"></div>
@@ -400,10 +428,10 @@
 </div>
 
 <script>
-  const formState  = document.getElementById('form-state');
+  const scene     = document.getElementById('env-scene');
+  const formState = document.getElementById('form-state');
   const successSec = document.getElementById('success-section');
-  const wrapper    = document.getElementById('env-wrapper');
-  const sentMsg    = document.getElementById('sent-msg');
+  const sentMsg   = document.getElementById('sent-msg');
 
   document.getElementById('signup-form').addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -446,9 +474,8 @@
       }
       successSec.style.display = 'flex';
 
-      // Envelope flies away after success
-      setTimeout(() => wrapper.classList.add('flying'), 1800);
-      setTimeout(() => sentMsg.classList.add('visible'), 2500);
+      setTimeout(() => scene.classList.add('flying'), 2000);
+      setTimeout(() => sentMsg.classList.add('visible'), 2800);
 
     } catch {
       errEl.textContent = 'Connection error. Try again.';
