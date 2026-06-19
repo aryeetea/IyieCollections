@@ -9,27 +9,19 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:        #0c0a0b;
-      --dark:      #0c0a0b;
-      --cream:     #f4e9dd;
-      --red:       #9B1B30;
-      --red-deep:  #6d1221;
-      --pink:      #d49aa4;
-      --muted:     rgba(244,233,221,0.42);
-      --border:    rgba(244,233,221,0.1);
-      --env:       #1e1618;
-      --env-flap:  #171214;
-      --env-fold:  #251a1d;
-      --env-front: #1a1315;
+      --bg:    #8B1525;
+      --cream: #f4e9dd;
+      --pink:  #f0b4bc;
+      --dark:  #2a080f;
+      --red:   #6d0f1c;
+      --muted: rgba(240,180,188,0.55);
     }
 
     html, body {
-      height: 100%;
-      background:
-        radial-gradient(ellipse at 60% 0%, rgba(155,27,48,0.2) 0%, transparent 55%),
-        var(--bg);
+      min-height: 100%;
+      background: var(--bg);
       font-family: 'Manrope', sans-serif;
-      color: var(--cream);
+      color: var(--pink);
       overflow-x: hidden;
     }
 
@@ -39,17 +31,16 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 3rem 2rem 4rem;
+      padding: 3rem 1.5rem 9rem;
+      gap: 2rem;
+      position: relative;
     }
 
     /* ── Brand ── */
-    .brand {
-      text-align: center;
-      margin-bottom: 2rem;
-    }
+    .brand { text-align: center; }
 
     .kicker {
-      font-size: 0.68rem;
+      font-size: 0.65rem;
       letter-spacing: 0.38em;
       text-transform: uppercase;
       color: var(--muted);
@@ -58,68 +49,54 @@
 
     .logo {
       font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(72px, 13vw, 130px);
+      font-size: clamp(5rem, 14vw, 9rem);
       font-weight: 300;
       line-height: 1;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.06em;
       color: var(--cream);
     }
 
-    .logo em { color: var(--red); font-style: italic; }
+    .logo em { color: var(--pink); font-style: italic; }
 
     .tagline {
       font-family: 'Cormorant Garamond', serif;
       font-style: italic;
-      font-size: 1rem;
+      font-size: clamp(0.95rem, 2vw, 1.1rem);
       color: var(--muted);
       margin-top: 0.5rem;
-      letter-spacing: 0.03em;
     }
 
     /* ── Envelope wrapper ── */
     .env-wrapper {
       position: relative;
-      width: min(480px, 92vw);
-      overflow: hidden;
+      width: min(460px, 100%);
     }
 
-    /* ── Invitation card (paper) ── */
-    .paper {
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      width: min(428px, 86vw);
-      height: 400px;
-      background: #1a1315;
-      border: 1px solid rgba(244,233,221,0.08);
-      z-index: 1;
-      will-change: transform;
-      transform: translateX(-50%) translateY(400px);
-      visibility: hidden;
-      transition: transform 0.82s cubic-bezier(0.35, 0, 0.15, 1);
-      padding: 28px 28px 0;
-    }
-
-    .paper.out {
-      transform: translateX(-50%) translateY(-130px);
-      box-shadow: 0 -8px 48px rgba(12,12,12,0.1), 0 2px 8px rgba(12,12,12,0.04);
+    /* ── Invitation card ── */
+    .card {
+      position: relative;
+      background: var(--cream);
+      padding: 2rem 2rem 1.6rem;
+      color: var(--dark);
+      z-index: 2;
+      box-shadow: 0 8px 48px rgba(0,0,0,0.3);
+      animation: rise 0.7s ease both;
     }
 
     .card-rule {
-      width: 24px;
-      height: 1px;
-      background: var(--red);
+      width: 28px;
+      height: 2px;
+      background: var(--bg);
       margin: 0 auto 1rem;
     }
 
     .card-heading {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 0.72rem;
+      font-size: 0.65rem;
       letter-spacing: 0.32em;
       text-transform: uppercase;
-      color: var(--muted);
+      color: rgba(42,8,15,0.45);
       text-align: center;
-      margin-bottom: 1.1rem;
+      margin-bottom: 1.2rem;
     }
 
     /* ── Form ── */
@@ -131,32 +108,36 @@
 
     .field input {
       width: 100%;
-      background: rgba(244,233,221,0.04);
-      border: 1px solid var(--border);
-      color: var(--cream);
-      padding: 11px 16px;
-      font-size: 0.88rem;
+      background: rgba(139,21,37,0.06);
+      border: 1px solid rgba(42,8,15,0.12);
+      color: var(--dark);
+      padding: 0.85rem 1rem;
       font-family: 'Manrope', sans-serif;
+      font-size: 0.88rem;
       outline: none;
-      transition: border-color 0.2s;
+      transition: border-color 0.2s, background 0.2s;
     }
 
-    .field input:focus { border-color: var(--red); }
-    .field input::placeholder { color: rgba(12,12,12,0.22); }
+    .field input:focus {
+      border-color: var(--bg);
+      background: rgba(139,21,37,0.04);
+    }
+
+    .field input::placeholder { color: rgba(42,8,15,0.3); }
 
     .btn {
       width: 100%;
-      background: var(--dark);
-      color: var(--bg);
+      background: var(--bg);
+      color: var(--cream);
       border: none;
-      padding: 13px;
+      padding: 1rem;
+      font-family: 'Manrope', sans-serif;
       font-size: 0.7rem;
       letter-spacing: 0.3em;
       text-transform: uppercase;
-      font-family: 'Manrope', sans-serif;
       font-weight: 600;
       cursor: pointer;
-      margin-top: 4px;
+      margin-top: 0.35rem;
       transition: background 0.2s;
       position: relative;
     }
@@ -169,26 +150,28 @@
       top: 50%; left: 50%;
       width: 14px; height: 14px;
       margin: -7px 0 0 -7px;
-      border: 1.5px solid rgba(245,240,232,0.3);
-      border-top-color: var(--bg);
+      border: 1.5px solid rgba(244,233,221,0.3);
+      border-top-color: var(--cream);
       border-radius: 50%;
       animation: spin 0.8s linear infinite;
     }
 
     .error-msg {
+      display: none;
       font-size: 0.78rem;
       color: var(--red);
-      display: none;
       text-align: center;
-      margin-top: 6px;
+      margin-top: 0.4rem;
     }
 
     .form-note {
-      font-size: 0.68rem;
+      font-size: 0.65rem;
       letter-spacing: 0.05em;
-      color: var(--muted);
+      color: rgba(42,8,15,0.42);
       text-align: center;
-      margin-top: 0.9rem;
+      margin-top: 1rem;
+      padding-top: 0.9rem;
+      border-top: 1px solid rgba(42,8,15,0.08);
     }
 
     /* ── Success state ── */
@@ -198,136 +181,104 @@
       align-items: center;
       text-align: center;
       gap: 0.5rem;
+      padding: 0.5rem 0;
+      animation: rise 0.6s ease both;
     }
 
     .success-mark {
       font-size: 0.65rem;
       letter-spacing: 0.32em;
       text-transform: uppercase;
-      color: var(--red);
+      color: var(--bg);
       font-weight: 600;
     }
 
     .success h2 {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.9rem;
+      font-size: clamp(1.8rem, 5vw, 2.4rem);
       font-weight: 300;
-      line-height: 1.15;
-      color: var(--cream);
+      line-height: 1.1;
+      color: var(--dark);
     }
 
-    .success h2 em { color: var(--red); font-style: italic; }
+    .success h2 em { color: var(--bg); font-style: italic; }
 
     .success p {
-      font-size: 0.82rem;
-      color: var(--muted);
+      font-size: 0.85rem;
+      color: rgba(42,8,15,0.55);
       line-height: 1.8;
     }
 
-    /* ── Envelope ── */
+    /* ── Open envelope base (cream) ── */
     .env {
       position: relative;
       width: 100%;
-      height: 168px;
-      z-index: 2;
-      perspective: 700px;
-      perspective-origin: center top;
-      cursor: pointer;
+      height: 140px;
+      z-index: 1;
     }
 
     .env-back {
       position: absolute;
       inset: 0;
-      background: var(--env);
+      background: #ede0d0;
     }
 
     .fold { position: absolute; inset: 0; }
-    .fold-l { background: var(--env-fold); clip-path: polygon(0 0, 50% 50%, 0 100%); }
-    .fold-r { background: var(--env-fold); clip-path: polygon(100% 0, 50% 50%, 100% 100%); }
-    .fold-b { background: #080808; clip-path: polygon(0 100%, 50% 44%, 100% 100%); }
+    .fold-l { background: #e5d8c8; clip-path: polygon(0 0, 50% 50%, 0 100%); }
+    .fold-r { background: #e5d8c8; clip-path: polygon(100% 0, 50% 50%, 100% 100%); }
+    .fold-b { background: #ddd0be; clip-path: polygon(0 100%, 50% 44%, 100% 100%); }
 
     .env-front {
       position: absolute;
       inset: 0;
-      background: var(--env-front);
+      background: #ede0d0;
       z-index: 1;
     }
 
-    /* Wax seal */
+    /* Flap — already open (folded back) */
+    .env-flap {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 70px;
+      background: #e8dbc9;
+      clip-path: polygon(0 0, 100% 0, 50% 100%);
+      transform-origin: center top;
+      transform: rotateX(-175deg);
+      backface-visibility: hidden;
+      z-index: 2;
+    }
+
+    /* Wax seal on envelope */
     .env-seal {
       position: absolute;
       top: 50%; left: 50%;
       transform: translate(-50%, -50%);
-      width: 48px; height: 48px;
+      width: 42px; height: 42px;
       border-radius: 50%;
-      background: var(--red);
+      background: var(--bg);
       display: flex;
       align-items: center;
       justify-content: center;
       font-family: 'Cormorant Garamond', serif;
       font-style: italic;
-      font-size: 9px;
+      font-size: 8px;
       letter-spacing: 1px;
-      color: rgba(245,240,232,0.9);
-      box-shadow: 0 2px 16px rgba(155,27,48,0.5);
+      color: var(--cream);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.2);
       pointer-events: none;
+      z-index: 3;
     }
 
-    /* Flap */
-    .env-flap {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 84px;
-      background: var(--env-flap);
-      clip-path: polygon(0 0, 100% 0, 50% 100%);
-      transform-origin: center top;
-      transform: rotateX(0deg);
-      backface-visibility: hidden;
-      transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
-      z-index: 2;
+    /* Fly away on success */
+    @keyframes fly {
+      0%   { transform: translate(0,0)      scale(1)    rotate(0deg);  opacity: 1; }
+      100% { transform: translate(110vw,-60vh) scale(0.1) rotate(20deg); opacity: 0; }
     }
+    .env-wrapper.flying { animation: fly 0.9s cubic-bezier(0.5,0,0.8,0) forwards; }
 
-    .env-flap.open { transform: rotateX(-175deg); }
-
-    /* Ship away */
-    @keyframes env-fly {
-      0%   { translate: 0 0;         scale: 1;    rotate: 0deg;  opacity: 1; }
-      100% { translate: 110vw -60vh; scale: 0.1;  rotate: 20deg; opacity: 0; }
-    }
-    .env.flying { animation: env-fly 0.9s cubic-bezier(0.5, 0, 0.8, 0) forwards; }
-
-    /* Mask below envelope */
-    .env-wrapper::after {
-      content: '';
-      position: absolute;
-      top: 100%;
-      left: -20px; right: -20px;
-      height: 80px;
-      background: #0c0a0b;
-      z-index: 5;
-      pointer-events: none;
-    }
-
-    /* ── Tap hint ── */
-    .tap-hint {
-      margin-top: 1.6rem;
-      font-size: 0.68rem;
-      letter-spacing: 0.3em;
-      color: var(--muted);
-      text-transform: uppercase;
-      cursor: pointer;
-      -webkit-user-select: none;
-      user-select: none;
-      transition: color 0.2s;
-    }
-
-    .tap-hint:hover { color: var(--red); }
-    .tap-hint.hidden { opacity: 0; pointer-events: none; }
-
-    /* ── Final message ── */
+    /* ── Sent message ── */
     .sent-msg {
       text-align: center;
-      margin-top: 1.8rem;
       opacity: 0;
       transform: translateY(8px);
       transition: opacity 0.7s ease, transform 0.7s ease;
@@ -342,17 +293,7 @@
       color: var(--muted);
     }
 
-    /* ── Footer ── */
-    .foot {
-      position: fixed;
-      bottom: 1.5rem;
-      font-size: 0.62rem;
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      color: rgba(12,12,12,0.18);
-    }
-
-    /* ── 3D bottom watermark ── */
+    /* ── 3D watermark ── */
     .watermark {
       position: fixed;
       bottom: -1rem;
@@ -367,12 +308,12 @@
     .watermark-text {
       display: block;
       font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(3.2rem, 7vw, 6.5rem);
+      font-size: clamp(3rem, 7vw, 6rem);
       font-weight: 300;
       letter-spacing: 0.3em;
       text-transform: uppercase;
       color: transparent;
-      -webkit-text-stroke: 1px rgba(155, 27, 48, 0.28);
+      -webkit-text-stroke: 1px rgba(240,180,188,0.22);
       animation: spin3d 16s linear infinite;
     }
 
@@ -383,11 +324,15 @@
 
     @keyframes spin { to { transform: rotate(360deg); } }
 
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
     @media (max-width: 480px) {
-      .logo { font-size: 72px; }
-      .paper { height: 380px; padding: 22px 20px 0; }
-      .env { height: 152px; }
-      .env-flap { height: 76px; }
+      .card { padding: 1.6rem 1.2rem 1.4rem; }
+      .env { height: 120px; }
+      .env-flap { height: 60px; }
     }
   </style>
 </head>
@@ -396,14 +341,15 @@
 <div class="page">
 
   <header class="brand">
-    <p class="kicker">An invitation, sealed with intention</p>
+    <p class="kicker">SS 2025 — Private list</p>
     <div class="logo">IYI<em>É</em></div>
     <p class="tagline">You can't buy taste. But you can be first.</p>
   </header>
 
   <div class="env-wrapper" id="env-wrapper">
 
-    <div class="paper" id="paper">
+    <!-- Card already out of envelope -->
+    <div class="card" id="card">
       <div class="card-rule"></div>
       <p class="card-heading">You have been cordially selected</p>
 
@@ -428,7 +374,8 @@
       </div>
     </div>
 
-    <div class="env" id="envelope" onclick="openEnvelope()">
+    <!-- Open envelope below the card -->
+    <div class="env" id="envelope">
       <div class="env-back">
         <div class="fold fold-l"></div>
         <div class="fold fold-r"></div>
@@ -437,12 +384,10 @@
       <div class="env-front">
         <div class="env-seal">IYIÉ</div>
       </div>
-      <div class="env-flap" id="flap"></div>
+      <div class="env-flap"></div>
     </div>
 
   </div>
-
-  <p class="tap-hint" id="tap-hint" onclick="openEnvelope()">Open your invite</p>
 
   <div class="sent-msg" id="sent-msg">
     <p>Sealed, stamped, and on its way to you.</p>
@@ -455,33 +400,13 @@
 </div>
 
 <script>
-  let state = 'closed';
-
-  const paper   = document.getElementById('paper');
-  const flap    = document.getElementById('flap');
-  const env     = document.getElementById('envelope');
-  const wrapper = document.getElementById('env-wrapper');
-  const tapHint = document.getElementById('tap-hint');
-  const sentMsg = document.getElementById('sent-msg');
-
-  function openEnvelope() {
-    if (state !== 'closed') return;
-    state = 'opening';
-    tapHint.classList.add('hidden');
-    flap.classList.add('open');
-
-    setTimeout(() => {
-      wrapper.style.overflow = 'visible';
-      paper.style.visibility = 'visible';
-      paper.classList.add('out');
-    }, 300);
-
-    setTimeout(() => { state = 'open'; }, 1100);
-  }
+  const formState  = document.getElementById('form-state');
+  const successSec = document.getElementById('success-section');
+  const wrapper    = document.getElementById('env-wrapper');
+  const sentMsg    = document.getElementById('sent-msg');
 
   document.getElementById('signup-form').addEventListener('submit', async (e) => {
     e.preventDefault();
-    if (state !== 'open') return;
 
     const email     = document.getElementById('email').value.trim();
     const firstName = document.getElementById('firstName').value.trim();
@@ -512,30 +437,22 @@
         return;
       }
 
-      state = 'closing';
       playChime();
 
-      document.getElementById('form-state').style.display = 'none';
+      formState.style.display = 'none';
       if (firstName) {
         document.getElementById('success-msg').textContent =
           `${firstName}, expect a very stylish email soon.`;
       }
-      document.getElementById('success-section').style.display = 'flex';
+      successSec.style.display = 'flex';
 
-      // Slide paper back in
-      setTimeout(() => paper.classList.remove('out'), 1800);
-      setTimeout(() => { paper.style.visibility = 'hidden'; }, 2600);
-      setTimeout(() => flap.classList.remove('open'), 2200);
-
-      // Fly away
-      setTimeout(() => env.classList.add('flying'), 3000);
-
-      // Final message
-      setTimeout(() => sentMsg.classList.add('visible'), 3700);
+      // Envelope flies away after success
+      setTimeout(() => wrapper.classList.add('flying'), 1800);
+      setTimeout(() => sentMsg.classList.add('visible'), 2500);
 
     } catch {
-      document.getElementById('error-msg').textContent = 'Connection error. Try again.';
-      document.getElementById('error-msg').style.display = 'block';
+      errEl.textContent = 'Connection error. Try again.';
+      errEl.style.display = 'block';
       btn.classList.remove('loading');
     }
   });
