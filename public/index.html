@@ -203,6 +203,33 @@
       100% { transform: rotateY(-55deg) rotateX(10deg); }
     }
 
+    /* ── Toast ── */
+    .toast {
+      position: fixed;
+      top: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(-120%);
+      background: var(--dark);
+      color: var(--cream);
+      padding: 0.85rem 1.6rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.78rem;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+      z-index: 999;
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: none;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+    .toast-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--pink);
+      flex-shrink: 0;
+    }
+
     @keyframes spin { to { transform: rotate(360deg); } }
     @keyframes rise {
       from { opacity: 0; transform: translateY(12px); }
@@ -211,6 +238,11 @@
   </style>
 </head>
 <body>
+<div class="toast" id="toast">
+  <span class="toast-dot"></span>
+  <span id="toast-msg">You've joined the list.</span>
+</div>
+
 <div class="page">
 
   <div class="logo">IYI<em>É</em></div>
@@ -274,6 +306,7 @@
       }
 
       playChime();
+      showToast(firstName ? `Welcome, ${firstName}. You're on the list.` : "You've joined the list.");
       document.getElementById('form-state').style.display = 'none';
       if (firstName) {
         document.getElementById('success-detail').textContent =
