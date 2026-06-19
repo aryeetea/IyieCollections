@@ -60,9 +60,11 @@ app.post('/subscribe', async (req, res) => {
   try {
     await resend.emails.send({
       from: process.env.FROM_EMAIL || 'IYIÉ Style <onboarding@resend.dev>',
+      replyTo: process.env.ADMIN_EMAIL,
       to: email,
-      subject: `Welcome to the circle${firstName ? `, ${firstName}` : ''} ✦`,
-      html: welcomeEmailHTML(firstName || 'babe', email)
+      subject: firstName ? `You're in, ${firstName}` : `You're in`,
+      text: welcomeEmailText(firstName || '', email),
+      html: welcomeEmailHTML(firstName || '', email)
     });
   } catch (err) {
     console.error('Welcome email failed:', err.message);
@@ -223,39 +225,51 @@ function adminNotifyHTML({ firstName, email, total }) {
 </body></html>`;
 }
 
+function welcomeEmailText(firstName, email) {
+  const unsubUrl = `${process.env.SITE_URL || 'http://localhost:3000'}/unsubscribe?email=${encodeURIComponent(email)}`;
+  const greeting = firstName ? `Hi ${firstName},` : 'Hi,';
+  return `${greeting}
+
+You're officially on the IYIÉ list.
+
+You'll be the first to know about new drops, exclusive edits, and everything IYIÉ — curated for the girl who does it well.
+
+To make sure you never miss a drop, save this address: hello@iyiecollection.co
+
+— IYIÉ Style
+
+You're receiving this because you signed up at iyiecollection.co.
+Unsubscribe: ${unsubUrl}`;
+}
+
 function welcomeEmailHTML(firstName, email) {
   const unsubUrl = `${process.env.SITE_URL || 'http://localhost:3000'}/unsubscribe?email=${encodeURIComponent(email)}`;
+  const greeting = firstName ? `Hi ${firstName},` : 'Hi,';
   return `<!DOCTYPE html>
-<html><head><meta charset="UTF-8"/>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Display:ital,wght@0,300;1,300&display=swap" rel="stylesheet"/>
-</head>
-<body style="margin:0;padding:0;background:#F5F0E8;font-family:Arial,sans-serif;">
+<html><head><meta charset="UTF-8"/></head>
+<body style="margin:0;padding:0;background:#ffffff;font-family:Georgia,serif;">
 <table width="100%" cellpadding="0" cellspacing="0"><tr><td align="center" style="padding:40px 20px;">
 <table width="520" cellpadding="0" cellspacing="0" style="max-width:520px;width:100%;">
 
-  <tr><td style="background:#0c0c0c;padding:48px 40px 36px;text-align:center;">
-    <div style="font-size:9px;letter-spacing:8px;color:rgba(255,255,255,0.3);margin-bottom:16px;">IYIÉ STYLE</div>
-    <div style="font-family:'Noto Serif Display',Georgia,serif;font-size:52px;font-weight:300;color:#F5F0E8;letter-spacing:6px;line-height:1;">IYI<em style="color:#9B1B30;">É</em></div>
+  <tr><td style="padding:0 0 28px;">
+    <p style="font-size:11px;letter-spacing:5px;color:#9B1B30;margin:0;text-transform:uppercase;">IYIÉ Style</p>
   </td></tr>
 
-  <tr><td style="background:#fff;padding:40px 40px 32px;text-align:center;">
-    <p style="font-size:9px;letter-spacing:4px;color:#9B1B30;font-weight:600;margin:0 0 16px;text-transform:uppercase;">You're in.</p>
-    <h1 style="font-family:'Noto Serif Display',Georgia,serif;font-size:30px;font-weight:300;color:#0c0c0c;margin:0 0 16px;line-height:1.3;">
-      Welcome to the circle,<br><em style="color:#9B1B30;">${firstName}.</em>
-    </h1>
-    <p style="font-size:14px;color:#888;line-height:1.8;margin:0 0 20px;max-width:360px;display:inline-block;">
-      You'll be the first to know about new drops, exclusive edits, and everything IYIÉ — curated for the girl who does it well.
+  <tr><td style="padding:0 0 24px;border-bottom:1px solid #f0e6d2;">
+    <p style="font-size:22px;color:#1a1a1a;margin:0 0 16px;line-height:1.4;">${greeting}</p>
+    <p style="font-size:15px;color:#444;line-height:1.8;margin:0 0 16px;">
+      You're officially on the IYIÉ list. You'll be the first to know about new drops, exclusive edits, and everything curated for the girl who does it well.
     </p>
-    <p style="font-size:12px;color:#bbb;line-height:1.7;margin:0 0 28px;padding:14px 20px;background:#f9f6f1;border-left:2px solid #9B1B30;text-align:left;max-width:360px;display:inline-block;">
-      To make sure you never miss a drop, add <strong style="color:#9B1B30;">hello@iyiecollection.co</strong> to your contacts.
+    <p style="font-size:14px;color:#888;line-height:1.7;margin:0;">
+      To make sure you never miss a drop, save this address:<br/>
+      <strong style="color:#9B1B30;">hello@iyiecollection.co</strong>
     </p>
   </td></tr>
 
-  <tr><td style="background:#0c0c0c;padding:24px 40px;text-align:center;">
-    <p style="font-family:'Noto Serif Display',Georgia,serif;font-size:18px;color:#9B1B30;letter-spacing:4px;margin:0 0 10px;">IYIÉ</p>
-    <p style="font-size:10px;color:#555;margin:0;line-height:1.8;">
-      You're receiving this because you joined the IYIÉ inner circle.<br/>
-      <a href="${unsubUrl}" style="color:#9B1B30;text-decoration:none;">Unsubscribe</a>
+  <tr><td style="padding:20px 0 0;">
+    <p style="font-size:12px;color:#bbb;margin:0;line-height:1.8;">
+      — IYIÉ Style<br/>
+      <a href="${unsubUrl}" style="color:#bbb;">Unsubscribe</a>
     </p>
   </td></tr>
 
