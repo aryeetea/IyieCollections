@@ -68,7 +68,7 @@ app.post('/subscribe', async (req, res) => {
   if (process.env.ADMIN_EMAIL) {
     try {
       const { data: contacts } = await resend.contacts.list({ audienceId: AUDIENCE_ID });
-      const total = (contacts || []).filter(c => !c.unsubscribed).length;
+      const total = (contacts?.data || []).filter(c => !c.unsubscribed).length;
       await resend.emails.send({
         from: process.env.FROM_EMAIL || 'IYIÉ Style <onboarding@resend.dev>',
         to: process.env.ADMIN_EMAIL,
